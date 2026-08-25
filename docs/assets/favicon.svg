@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect x="1" y="1" width="30" height="30" rx="6" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"></rect>
+  <text x="16" y="21" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12.5" font-weight="700" letter-spacing="-0.4" fill="#ffffff">
+    SC
+  </text>
+</svg>

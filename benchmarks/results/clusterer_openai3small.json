@@ -1,0 +1,861 @@
+{
+  "kind": "SemanticClusterer",
+  "embedder_alias": "openai3small",
+  "embedder_name": "text-embedding-3-small (OpenAI direct)",
+  "granularity": "balanced",
+  "seed": 42,
+  "environment": {
+    "python": "3.13.12",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "timestamp_utc": "2026-08-20T00:57:43+00:00",
+    "numpy": "2.4.4",
+    "scikit-learn": "1.8.0",
+    "hdbscan": "0.8.43",
+    "umap-learn": "0.5.12",
+    "semantic-clusterer": "0.1.0"
+  },
+  "runs": [
+    {
+      "kind": "SemanticClusterer",
+      "dataset": "20ng",
+      "embedder": "openai3small",
+      "tier_requested": "tiny",
+      "tier_actual": "tiny",
+      "k": null,
+      "n_docs": 116,
+      "n_true_classes": 20,
+      "seed": 42,
+      "seconds": 44.38,
+      "embedding_dim": 1536,
+      "dim_band": "high",
+      "n_pred_clusters": 6,
+      "n_noise": 0,
+      "confidence_level": "high",
+      "warnings": [],
+      "external_metrics": {
+        "ari": 0.2010318773312088,
+        "nmi": 0.5559403430612457,
+        "v_measure": 0.5559403430612458,
+        "homogeneity": 0.4385360890628351,
+        "completeness": 0.7591894579664432,
+        "coverage": 1.0,
+        "noise_ratio": 0.0,
+        "n_pred_clusters": 6
+      },
+      "intrinsic_metrics": {
+        "score": 0.7114143575491142,
+        "coverage": 1.0,
+        "cohesion": 0.7667922177191439,
+        "separation": 0.9602711200714111,
+        "stability": 0.8173308612033009,
+        "largest_ratio": 0.28448275862068967,
+        "fragmentation": 0.0,
+        "n_clusters": 6,
+        "noise_ratio": 0.0
+      },
+      "per_cluster": [
+        {
+          "cluster_id": 0,
+          "size": 22,
+          "purity": 0.2727,
+          "dominant_true_class": 2,
+          "dominant_true_name": "comp.os.ms-windows.misc"
+        },
+        {
+          "cluster_id": 1,
+          "size": 18,
+          "purity": 0.3333,
+          "dominant_true_class": 12,
+          "dominant_true_name": "sci.electronics"
+        },
+        {
+          "cluster_id": 2,
+          "size": 17,
+          "purity": 0.2941,
+          "dominant_true_class": 16,
+          "dominant_true_name": "talk.politics.guns"
+        },
+        {
+          "cluster_id": 3,
+          "size": 16,
+          "purity": 0.375,
+          "dominant_true_class": 15,
+          "dominant_true_name": "soc.religion.christian"
+        },
+        {
+          "cluster_id": 4,
+          "size": 10,
+          "purity": 0.6,
+          "dominant_true_class": 10,
+          "dominant_true_name": "rec.sport.hockey"
+        },
+        {
+          "cluster_id": 5,
+          "size": 33,
+          "purity": 0.1818,
+          "dominant_true_class": 13,
+          "dominant_true_name": "sci.med"
+        }
+      ],
+      "true_class_recovery": [
+        {
+          "true_name": "alt.atheism",
+          "n_docs": 5,
+          "best_cluster_fraction": 0.6,
+          "n_noise": 0
+        },
+        {
+          "true_name": "comp.graphics",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.5,
+          "n_noise": 0
+        },
+        {
+          "true_name": "comp.os.ms-windows.misc",
+          "n_docs": 6,
+          "best_cluster_fraction": 1.0,
+          "n_noise": 0
+        },
+        {
+          "true_name": "comp.sys.ibm.pc.hardware",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.6667,
+          "n_noise": 0
+        },
+        {
+          "true_name": "comp.sys.mac.hardware",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.5,
+          "n_noise": 0
+        },
+        {
+          "true_name": "comp.windows.x",
+          "n_docs": 6,
+          "best_cluster_fraction": 1.0,
+          "n_noise": 0
+        },
+        {
+          "true_name": "misc.forsale",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.5,
+          "n_noise": 0
+        },
+        {
+          "true_name": "rec.autos",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.6667,
+          "n_noise": 0
+        },
+        {
+          "true_name": "rec.motorcycles",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.8333,
+          "n_noise": 0
+        },
+        {
+          "true_name": "rec.sport.baseball",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.6667,
+          "n_noise": 0
+        },
+        {
+          "true_name": "rec.sport.hockey",
+          "n_docs": 6,
+          "best_cluster_fraction": 1.0,
+          "n_noise": 0
+        },
+        {
+          "true_name": "sci.crypt",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.8333,
+          "n_noise": 0
+        },
+        {
+          "true_name": "sci.electronics",
+          "n_docs": 6,
+          "best_cluster_fraction": 1.0,
+          "n_noise": 0
+        },
+        {
+          "true_name": "sci.med",
+          "n_docs": 6,
+          "best_cluster_fraction": 1.0,
+          "n_noise": 0
+        },
+        {
+          "true_name": "sci.space",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.8333,
+          "n_noise": 0
+        },
+        {
+          "true_name": "soc.religion.christian",
+          "n_docs": 6,
+          "best_cluster_fraction": 1.0,
+          "n_noise": 0
+        },
+        {
+          "true_name": "talk.politics.guns",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.8333,
+          "n_noise": 0
+        },
+        {
+          "true_name": "talk.politics.mideast",
+          "n_docs": 6,
+          "best_cluster_fraction": 0.8333,
+          "n_noise": 0
+        },
+        {
+          "true_name": "talk.politics.misc",
+          "n_docs": 5,
+          "best_cluster_fraction": 1.0,
+          "n_noise": 0
+        },
+        {
+          "true_name": "talk.religion.misc",
+          "n_docs": 4,
+          "best_cluster_fraction": 0.75,
+          "n_noise": 0
+        }
+      ],
+      "granularity": "balanced"
+    },
+    {
+      "kind": "SemanticClusterer",
+      "dataset": "20ng",
+      "embedder": "openai3small",
+      "tier_requested": "small",
+      "tier_actual": "small",
+      "k": null,
+      "n_docs": 1500,
+      "n_true_classes": 20,
+      "seed": 42,
+      "seconds": 30.72,
+      "embedding_dim": 1536,
+      "dim_band": "high",
+      "n_pred_clusters": 22,
+      "n_noise": 28,
+      "confidence_level": "high",
+      "warnings": [],
+      "external_metrics": {
+        "ari": 0.4921609685519946,
+        "nmi": 0.6516459613222868,
+        "v_measure": 0.6516459613222868,
+        "homogeneity": 0.6577504421822721,
+        "completeness": 0.6456537480234101,
+        "coverage": 0.9813333333333333,
+        "noise_ratio": 0.01866666666666672,
+        "n_pred_clusters": 22
+      },
+      "intrinsic_metrics": {
+        "score": 0.7424694360983539,
+        "coverage": 0.9819879919946631,
+        "cohesion": 0.7844162284518066,
+        "separation": 0.9889530539512634,
+        "stability": 0.8490073996542604,
+        "largest_ratio": 0.07738492328218813,
+        "fragmentation": 0.0,
+        "n_clusters": 22,
+        "noise_ratio": 0.01801200800533689
+      },
+      "per_cluster": [
+        {
+          "cluster_id": 0,
+          "size": 73,
+          "purity": 0.8767,
+          "dominant_true_class": 11,
+          "dominant_true_name": "sci.crypt"
+        },
+        {
+          "cluster_id": 1,
+          "size": 81,
+          "purity": 0.1235,
+          "dominant_true_class": 14,
+          "dominant_true_name": "sci.space"
+        },
+        {
+          "cluster_id": 2,
+          "size": 75,
+          "purity": 0.8533,
+          "dominant_true_class": 13,
+          "dominant_true_name": "sci.med"
+        },
+        {
+          "cluster_id": 3,
+          "size": 77,
+          "purity": 0.8442,
+          "dominant_true_class": 14,
+          "dominant_true_name": "sci.space"
+        },
+        {
+          "cluster_id": 4,
+          "size": 77,
+          "purity": 0.9351,
+          "dominant_true_class": 10,
+          "dominant_true_name": "rec.sport.hockey"
+        },
+        {
+          "cluster_id": 5,
+          "size": 62,
+          "purity": 0.9516,
+          "dominant_true_class": 9,
+          "dominant_true_name": "rec.sport.baseball"
+        },
+        {
+          "cluster_id": 6,
+          "size": 34,
+          "purity": 0.6471,
+          "dominant_true_class": 17,
+          "dominant_true_name": "talk.politics.mideast"
+        },
+        {
+          "cluster_id": 7,
+          "size": 41,
+          "purity": 0.8537,
+          "dominant_true_class": 17,
+          "dominant_true_name": "talk.politics.mideast"
+        },
+        {
+          "cluster_id": 8,
+          "size": 60,
+          "purity": 0.9,
+          "dominant_true_class": 8,
+          "dominant_true_name": "rec.motorcycles"
+        },
+        {
+          "cluster_id": 9,
+          "size": 72,
+          "purity": 0.875,
+          "dominant_true_class": 7,
+          "dominant_true_name": "rec.autos"
+        },
+        {
+          "cluster_id": 10,
+          "size": 85,
+          "purity": 0.4,
+          "dominant_true_class": 18,
+          "dominant_true_name": "talk.politics.misc"
+        },
+        {
+          "cluster_id": 11,
+          "size": 40,
+          "purity": 0.825,
+          "dominant_true_class": 16,
+          "dominant_true_name": "talk.politics.guns"
+        },
+        {
+          "cluster_id": 12,
+          "size": 48,
+          "purity": 0.4583,
+          "dominant_true_class": 16,
+          "dominant_true_name": "talk.politics.guns"
+        },
+        {
+          "cluster_id": 13,
+          "size": 49,
+          "purity": 0.5306,
+          "dominant_true_class": 0,
+          "dominant_true_name": "alt.atheism"
+        },
+        {
+          "cluster_id": 14,
+          "size": 103,
+          "purity": 0.6408,
+          "dominant_true_class": 15,
+          "dominant_true_name": "soc.religion.christian"
+        },
+        {
+          "cluster_id": 15,
+          "size": 58,
+          "purity": 0.8448,
+          "dominant_true_class": 12,
+          "dominant_true_name": "sci.electronics"
+        },
+        {
+          "cluster_id": 16,
+          "size": 66,
+          "purity": 0.5303,
+          "dominant_true_class": 2,
+          "dominant_true_name": "comp.os.ms-windows.misc"
+        },
+        {
+          "cluster_id": 17,
+          "size": 61,
+          "purity": 0.5082,
+          "dominant_true_class": 1,
+          "dominant_true_name": "comp.graphics"
+        },
+        {
+          "cluster_id": 18,
+          "size": 91,
+          "purity": 0.7033,
+          "dominant_true_class": 6,
+          "dominant_true_name": "misc.forsale"
+        },
+        {
+          "cluster_id": 19,
+          "size": 54,
+          "purity": 0.2778,
+          "dominant_true_class": 2,
+          "dominant_true_name": "comp.os.ms-windows.misc"
+        },
+        {
+          "cluster_id": 20,
+          "size": 116,
+          "purity": 0.5172,
+          "dominant_true_class": 3,
+          "dominant_true_name": "comp.sys.ibm.pc.hardware"
+        },
+        {
+          "cluster_id": 21,
+          "size": 49,
+          "purity": 0.8571,
+          "dominant_true_class": 5,
+          "dominant_true_name": "comp.windows.x"
+        }
+      ],
+      "true_class_recovery": [
+        {
+          "true_name": "alt.atheism",
+          "n_docs": 64,
+          "best_cluster_fraction": 0.4062,
+          "n_noise": 2
+        },
+        {
+          "true_name": "comp.graphics",
+          "n_docs": 78,
+          "best_cluster_fraction": 0.3974,
+          "n_noise": 1
+        },
+        {
+          "true_name": "comp.os.ms-windows.misc",
+          "n_docs": 77,
+          "best_cluster_fraction": 0.4545,
+          "n_noise": 2
+        },
+        {
+          "true_name": "comp.sys.ibm.pc.hardware",
+          "n_docs": 79,
+          "best_cluster_fraction": 0.7595,
+          "n_noise": 1
+        },
+        {
+          "true_name": "comp.sys.mac.hardware",
+          "n_docs": 76,
+          "best_cluster_fraction": 0.4605,
+          "n_noise": 2
+        },
+        {
+          "true_name": "comp.windows.x",
+          "n_docs": 80,
+          "best_cluster_fraction": 0.525,
+          "n_noise": 2
+        },
+        {
+          "true_name": "misc.forsale",
+          "n_docs": 78,
+          "best_cluster_fraction": 0.8205,
+          "n_noise": 1
+        },
+        {
+          "true_name": "rec.autos",
+          "n_docs": 77,
+          "best_cluster_fraction": 0.8182,
+          "n_noise": 1
+        },
+        {
+          "true_name": "rec.motorcycles",
+          "n_docs": 79,
+          "best_cluster_fraction": 0.6835,
+          "n_noise": 3
+        },
+        {
+          "true_name": "rec.sport.baseball",
+          "n_docs": 78,
+          "best_cluster_fraction": 0.7564,
+          "n_noise": 2
+        },
+        {
+          "true_name": "rec.sport.hockey",
+          "n_docs": 80,
+          "best_cluster_fraction": 0.9,
+          "n_noise": 2
+        },
+        {
+          "true_name": "sci.crypt",
+          "n_docs": 79,
+          "best_cluster_fraction": 0.8101,
+          "n_noise": 0
+        },
+        {
+          "true_name": "sci.electronics",
+          "n_docs": 78,
+          "best_cluster_fraction": 0.6282,
+          "n_noise": 2
+        },
+        {
+          "true_name": "sci.med",
+          "n_docs": 79,
+          "best_cluster_fraction": 0.8101,
+          "n_noise": 0
+        },
+        {
+          "true_name": "sci.space",
+          "n_docs": 78,
+          "best_cluster_fraction": 0.8333,
+          "n_noise": 1
+        },
+        {
+          "true_name": "soc.religion.christian",
+          "n_docs": 80,
+          "best_cluster_fraction": 0.825,
+          "n_noise": 0
+        },
+        {
+          "true_name": "talk.politics.guns",
+          "n_docs": 73,
+          "best_cluster_fraction": 0.4521,
+          "n_noise": 1
+        },
+        {
+          "true_name": "talk.politics.mideast",
+          "n_docs": 75,
+          "best_cluster_fraction": 0.4667,
+          "n_noise": 2
+        },
+        {
+          "true_name": "talk.politics.misc",
+          "n_docs": 62,
+          "best_cluster_fraction": 0.5484,
+          "n_noise": 3
+        },
+        {
+          "true_name": "talk.religion.misc",
+          "n_docs": 50,
+          "best_cluster_fraction": 0.4,
+          "n_noise": 0
+        }
+      ],
+      "granularity": "balanced"
+    },
+    {
+      "kind": "SemanticClusterer",
+      "dataset": "20ng",
+      "embedder": "openai3small",
+      "tier_requested": "medium",
+      "tier_actual": "medium",
+      "k": null,
+      "n_docs": 15000,
+      "n_true_classes": 20,
+      "seed": 42,
+      "seconds": 6270.27,
+      "embedding_dim": 1536,
+      "dim_band": "high",
+      "n_pred_clusters": 22,
+      "n_noise": 323,
+      "confidence_level": "high",
+      "warnings": [],
+      "external_metrics": {
+        "ari": 0.4561417728905714,
+        "nmi": 0.6032266590464105,
+        "v_measure": 0.6032266590464107,
+        "homogeneity": 0.5979268924097124,
+        "completeness": 0.6086212155608648,
+        "coverage": 0.9784666666666667,
+        "noise_ratio": 0.021533333333333293,
+        "n_pred_clusters": 22
+      },
+      "intrinsic_metrics": {
+        "score": 0.6013085587341193,
+        "coverage": 0.9794346195069668,
+        "cohesion": 0.7777172258513203,
+        "separation": 0.539864754962174,
+        "stability": 0.7083516065854143,
+        "largest_ratio": 0.10919078242229367,
+        "fragmentation": 0.0,
+        "n_clusters": 22,
+        "noise_ratio": 0.020565380493033227
+      },
+      "per_cluster": [
+        {
+          "cluster_id": 0,
+          "size": 1473,
+          "purity": 0.4956,
+          "dominant_true_class": 10,
+          "dominant_true_name": "rec.sport.hockey"
+        },
+        {
+          "cluster_id": 1,
+          "size": 696,
+          "purity": 0.9224,
+          "dominant_true_class": 13,
+          "dominant_true_name": "sci.med"
+        },
+        {
+          "cluster_id": 2,
+          "size": 1495,
+          "purity": 0.4548,
+          "dominant_true_class": 7,
+          "dominant_true_name": "rec.autos"
+        },
+        {
+          "cluster_id": 3,
+          "size": 188,
+          "purity": 0.9628,
+          "dominant_true_class": 17,
+          "dominant_true_name": "talk.politics.mideast"
+        },
+        {
+          "cluster_id": 4,
+          "size": 618,
+          "purity": 0.8932,
+          "dominant_true_class": 11,
+          "dominant_true_name": "sci.crypt"
+        },
+        {
+          "cluster_id": 5,
+          "size": 512,
+          "purity": 0.8535,
+          "dominant_true_class": 17,
+          "dominant_true_name": "talk.politics.mideast"
+        },
+        {
+          "cluster_id": 6,
+          "size": 688,
+          "purity": 0.8939,
+          "dominant_true_class": 14,
+          "dominant_true_name": "sci.space"
+        },
+        {
+          "cluster_id": 7,
+          "size": 1630,
+          "purity": 0.419,
+          "dominant_true_class": 15,
+          "dominant_true_name": "soc.religion.christian"
+        },
+        {
+          "cluster_id": 8,
+          "size": 534,
+          "purity": 0.5281,
+          "dominant_true_class": 16,
+          "dominant_true_name": "talk.politics.guns"
+        },
+        {
+          "cluster_id": 9,
+          "size": 433,
+          "purity": 0.6767,
+          "dominant_true_class": 16,
+          "dominant_true_name": "talk.politics.guns"
+        },
+        {
+          "cluster_id": 10,
+          "size": 321,
+          "purity": 0.6012,
+          "dominant_true_class": 18,
+          "dominant_true_name": "talk.politics.misc"
+        },
+        {
+          "cluster_id": 11,
+          "size": 650,
+          "purity": 0.1415,
+          "dominant_true_class": 1,
+          "dominant_true_name": "comp.graphics"
+        },
+        {
+          "cluster_id": 12,
+          "size": 193,
+          "purity": 0.456,
+          "dominant_true_class": 2,
+          "dominant_true_name": "comp.os.ms-windows.misc"
+        },
+        {
+          "cluster_id": 13,
+          "size": 518,
+          "purity": 0.7857,
+          "dominant_true_class": 12,
+          "dominant_true_name": "sci.electronics"
+        },
+        {
+          "cluster_id": 14,
+          "size": 483,
+          "purity": 0.2547,
+          "dominant_true_class": 3,
+          "dominant_true_name": "comp.sys.ibm.pc.hardware"
+        },
+        {
+          "cluster_id": 15,
+          "size": 808,
+          "purity": 0.776,
+          "dominant_true_class": 6,
+          "dominant_true_name": "misc.forsale"
+        },
+        {
+          "cluster_id": 16,
+          "size": 819,
+          "purity": 0.4054,
+          "dominant_true_class": 3,
+          "dominant_true_name": "comp.sys.ibm.pc.hardware"
+        },
+        {
+          "cluster_id": 17,
+          "size": 531,
+          "purity": 0.4595,
+          "dominant_true_class": 4,
+          "dominant_true_name": "comp.sys.mac.hardware"
+        },
+        {
+          "cluster_id": 18,
+          "size": 782,
+          "purity": 0.8095,
+          "dominant_true_class": 5,
+          "dominant_true_name": "comp.windows.x"
+        },
+        {
+          "cluster_id": 19,
+          "size": 557,
+          "purity": 0.7253,
+          "dominant_true_class": 1,
+          "dominant_true_name": "comp.graphics"
+        },
+        {
+          "cluster_id": 20,
+          "size": 547,
+          "purity": 0.1097,
+          "dominant_true_class": 17,
+          "dominant_true_name": "talk.politics.mideast"
+        },
+        {
+          "cluster_id": 21,
+          "size": 201,
+          "purity": 0.5174,
+          "dominant_true_class": 18,
+          "dominant_true_name": "talk.politics.misc"
+        }
+      ],
+      "true_class_recovery": [
+        {
+          "true_name": "alt.atheism",
+          "n_docs": 637,
+          "best_cluster_fraction": 0.6876,
+          "n_noise": 4
+        },
+        {
+          "true_name": "comp.graphics",
+          "n_docs": 781,
+          "best_cluster_fraction": 0.5173,
+          "n_noise": 32
+        },
+        {
+          "true_name": "comp.os.ms-windows.misc",
+          "n_docs": 775,
+          "best_cluster_fraction": 0.3458,
+          "n_noise": 43
+        },
+        {
+          "true_name": "comp.sys.ibm.pc.hardware",
+          "n_docs": 789,
+          "best_cluster_fraction": 0.4208,
+          "n_noise": 32
+        },
+        {
+          "true_name": "comp.sys.mac.hardware",
+          "n_docs": 760,
+          "best_cluster_fraction": 0.3211,
+          "n_noise": 43
+        },
+        {
+          "true_name": "comp.windows.x",
+          "n_docs": 804,
+          "best_cluster_fraction": 0.7873,
+          "n_noise": 22
+        },
+        {
+          "true_name": "misc.forsale",
+          "n_docs": 785,
+          "best_cluster_fraction": 0.7987,
+          "n_noise": 11
+        },
+        {
+          "true_name": "rec.autos",
+          "n_docs": 767,
+          "best_cluster_fraction": 0.8866,
+          "n_noise": 3
+        },
+        {
+          "true_name": "rec.motorcycles",
+          "n_docs": 793,
+          "best_cluster_fraction": 0.8335,
+          "n_noise": 5
+        },
+        {
+          "true_name": "rec.sport.baseball",
+          "n_docs": 784,
+          "best_cluster_fraction": 0.9018,
+          "n_noise": 3
+        },
+        {
+          "true_name": "rec.sport.hockey",
+          "n_docs": 798,
+          "best_cluster_fraction": 0.9148,
+          "n_noise": 4
+        },
+        {
+          "true_name": "sci.crypt",
+          "n_docs": 787,
+          "best_cluster_fraction": 0.7014,
+          "n_noise": 23
+        },
+        {
+          "true_name": "sci.electronics",
+          "n_docs": 784,
+          "best_cluster_fraction": 0.5191,
+          "n_noise": 38
+        },
+        {
+          "true_name": "sci.med",
+          "n_docs": 786,
+          "best_cluster_fraction": 0.8168,
+          "n_noise": 9
+        },
+        {
+          "true_name": "sci.space",
+          "n_docs": 781,
+          "best_cluster_fraction": 0.7875,
+          "n_noise": 9
+        },
+        {
+          "true_name": "soc.religion.christian",
+          "n_docs": 798,
+          "best_cluster_fraction": 0.8559,
+          "n_noise": 5
+        },
+        {
+          "true_name": "talk.politics.guns",
+          "n_docs": 725,
+          "best_cluster_fraction": 0.4041,
+          "n_noise": 15
+        },
+        {
+          "true_name": "talk.politics.mideast",
+          "n_docs": 752,
+          "best_cluster_fraction": 0.5811,
+          "n_noise": 5
+        },
+        {
+          "true_name": "talk.politics.misc",
+          "n_docs": 618,
+          "best_cluster_fraction": 0.3123,
+          "n_noise": 12
+        },
+        {
+          "true_name": "talk.religion.misc",
+          "n_docs": 496,
+          "best_cluster_fraction": 0.6694,
+          "n_noise": 5
+        }
+      ],
+      "granularity": "balanced"
+    }
+  ]
+}

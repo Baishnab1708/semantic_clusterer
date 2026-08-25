@@ -1,0 +1,56 @@
+# =============================================================================
+# Deploy Documentation — MkDocs Material → GitHub Pages
+# =============================================================================
+# TRIGGER:  Every push to `main` branch
+# PURPOSE:  Compile README.md, USER_GUIDE.md, WORKING.md, CHANGELOG.md, and
+#           examples/README.md into a beautiful searchable website and deploy
+#           it to GitHub Pages.
+# OUTPUT:   Live site at https://<username>.github.io/semantic-clusterer/
+# =============================================================================
+
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [main]
+    # ↑ Every push to main immediately updates the live documentation site.
+    #   Feature branches and PRs do NOT trigger this.
+
+permissions:
+  contents: write
+  # ↑ The runner needs WRITE access because `mkdocs gh-deploy` pushes
+  #   compiled HTML to the `gh-pages` branch of your repository.
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # ↑ Fetch full git history — MkDocs Material uses git commit dates
+          #   to show "last updated" timestamps on each page
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs + Material theme + extensions
+        run: |
+          pip install \
+            mkdocs-material \
+            pymdown-extensions
+          # mkdocs-material    = the theme (auto-installs mkdocs itself)
+          # pymdown-extensions = syntax highlighting, tabs, superfences
+
+
+      # --- Build and deploy ---
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
+        # ↑ This command does three things:
+        #   1. READS mkdocs.yml + docs/*.md
+        #   2. COMPILES them into HTML/CSS/JS in a site/ folder
+        #   3. FORCE-PUSHES site/ to the `gh-pages` branch
+        #   GitHub Pages then serves the gh-pages branch as your live website

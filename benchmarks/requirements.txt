@@ -1,0 +1,15 @@
+# Benchmark dependencies.
+#
+# The minilm runs need ONLY what semantic-clusterer + scikit-learn already
+# provide. The packages below are needed for the other two embedders and the
+# large-tier dataset.
+
+# AG News dataset loader (required for the large tier, --tiers large)
+datasets>=2.0.0
+
+# all-mpnet-base-v2 embedder (--embedder mpnet); downloads ~420 MB once
+sentence-transformers>=2.2.0
+
+# text-embedding-3-small via OpenAI direct API (--embedder openai3small)
+openai>=1.0.0
+python-dotenv>=1.0.0

@@ -1,0 +1,53 @@
+{
+  "tiny": {
+    "tier": "tiny",
+    "fixture": "gold:20ng:116",
+    "score": 0.696195,
+    "ari": 0.167074,
+    "floor": 0.5097,
+    "n_clusters": 6,
+    "_calibration": {
+      "n_runs": 3,
+      "embedders": [
+        "?"
+      ],
+      "min_score": 0.679535,
+      "max_score": 0.711414,
+      "safety_margin": 0.75
+    }
+  },
+  "small": {
+    "tier": "small",
+    "fixture": "gold:20ng:1500",
+    "score": 0.706874,
+    "ari": 0.443493,
+    "floor": 0.4994,
+    "n_clusters": 24,
+    "_calibration": {
+      "n_runs": 3,
+      "embedders": [
+        "?"
+      ],
+      "min_score": 0.665921,
+      "max_score": 0.741246,
+      "safety_margin": 0.75
+    }
+  },
+  "medium": {
+    "tier": "medium",
+    "fixture": "gold:20ng:15000",
+    "score": 0.592252,
+    "ari": 0.424566,
+    "floor": 0.4276,
+    "n_clusters": 22,
+    "_calibration": {
+      "n_runs": 3,
+      "embedders": [
+        "?"
+      ],
+      "min_score": 0.570085,
+      "max_score": 0.614998,
+      "safety_margin": 0.75
+    }
+  }
+}

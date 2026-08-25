@@ -1,0 +1,95 @@
+# =============================================================================
+# MkDocs Material Configuration — semantic-clusterer documentation site
+# =============================================================================
+site_name: Semantic Clusterer
+site_url: https://Baishnab1708.github.io/semantic_clusterer/
+site_description: >-
+  A production-ready Python library for unsupervised semantic text clustering
+  at scale. Ships with a built-in ONNX embedder, an adaptive multi-tier
+  pipeline, and two focused public classes.
+site_author: semantic_clusterer contributor
+
+# --- GitHub repository link (shown in top-right corner of site) ---
+repo_url: https://github.com/Baishnab1708/semantic_clusterer
+repo_name: semantic_clusterer
+edit_uri: edit/main/
+
+# --- Theme configuration ---
+theme:
+  name: material
+  favicon: assets/favicon.svg
+
+  # --- Sleek Minimalist Dark/Slate palette (No Light/Dark Switch) ---
+  palette:
+    scheme: slate
+    primary: black
+    accent: cyan
+
+  # --- Site features ---
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+    - search.suggest
+
+  # --- Font ---
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+# --- Custom Stylesheet ---
+extra_css:
+  - stylesheets/extra.css
+
+# --- Markdown extensions (enable advanced formatting) ---
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - tables
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# --- Math rendering (for WORKING.md formulas) ---
+extra_javascript:
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+# --- Navigation structure ---
+nav:
+  - Home: index.md
+  - User Guide: user_guide.md
+  - How It Works: working.md
+  - Changelog: changelog.md
+  - Examples: examples.md
+
+# --- Extra footer links and social ---
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Baishnab1708/semantic_clusterer
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/semantic_clusterer/
+  generator: false
+
+# --- Copyright ---
+copyright: Copyright &copy; 2026 semantic_clusterer contributor

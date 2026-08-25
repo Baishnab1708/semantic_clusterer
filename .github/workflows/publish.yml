@@ -1,0 +1,100 @@
+# =============================================================================
+# Publish to PyPI — Automated Package Release
+# =============================================================================
+# TRIGGER:  ONLY when you create a GitHub Release (e.g., tag v0.1.0)
+# PURPOSE:  Build the Python wheel+sdist and securely upload to PyPI using OIDC
+#           (no API tokens or passwords needed).
+# SECURITY: Uses PyPI Trusted Publishers (OIDC) — GitHub proves its identity
+#           to PyPI via a short-lived certificate. No secrets stored.
+# =============================================================================
+
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+    # ↑ Fires ONLY when you go to GitHub → Releases → Create → Publish
+    #   Does NOT fire on pushes, PRs, or draft releases
+
+permissions:
+  contents: read
+  # ↑ Can read repo files (needed to checkout)
+  id-token: write
+  # ↑ Can request an OIDC identity token from GitHub
+  #   This token is sent to PyPI to prove "I am this repo"
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────
+  # Job 1: Run tests FIRST — if tests fail, we do NOT publish
+  # ─────────────────────────────────────────────────────────────────────
+  test:
+    name: Pre-release tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -e ".[dev]"
+
+      - name: Run tests
+        run: |
+          python -m pytest tests/ -v --tb=short -W ignore::UserWarning -W ignore::DeprecationWarning -W ignore::FutureWarning -m "not benchmark and not integration"
+        env:
+          PYTHONHASHSEED: "42"
+
+  # ─────────────────────────────────────────────────────────────────────
+  # Job 2: Build and publish (only runs if tests pass)
+  # ─────────────────────────────────────────────────────────────────────
+  build-and-publish:
+    name: Build & publish to PyPI
+    needs: test
+    # ↑ This job WAITS for the "test" job to succeed.
+    #   If tests fail → this job is SKIPPED → nothing is uploaded to PyPI.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build hatchling
+          # `build`     = PEP 517 build frontend
+          # `hatchling` = the build backend declared in pyproject.toml
+
+      - name: Build wheel and sdist
+        run: python -m build
+        # ↑ Creates two files in dist/:
+        #   dist/semantic_clusterer-0.1.0-py3-none-any.whl   (wheel)
+        #   dist/semantic_clusterer-0.1.0.tar.gz              (source)
+        #   The version is read from pyproject.toml → version = "X.Y.Z"
+
+      - name: Verify build artifacts
+        run: |
+          ls -la dist/
+          echo "--- Wheel contents ---"
+          python -m zipfile -l dist/*.whl | head -30
+        # ↑ Safety check: prints the build output so you can inspect it in the
+        #   GitHub Actions log if something looks wrong
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # ↑ Official PyPA action. It:
+        #   1. Requests an OIDC token from GitHub
+        #   2. Exchanges the token with PyPI for upload credentials
+        #   3. Uploads dist/*.whl and dist/*.tar.gz to PyPI
+        #   No secrets, API keys, or passwords needed — pure OIDC trust.

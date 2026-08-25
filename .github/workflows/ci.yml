@@ -1,0 +1,52 @@
+# =============================================================================
+# CI — Continuous Integration (Tests)
+# =============================================================================
+# TRIGGER:  Every push to `main` AND every pull request targeting `main`
+# PURPOSE:  Run the full test suite to catch bugs BEFORE they reach a release.
+#           This is your safety net — code that breaks tests never gets released.
+# RUNNER:   Ubuntu (latest), Python 3.9 → 3.12
+# =============================================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # ↑ If Python 3.9 fails, keep running 3.10/3.11/3.12 so you see ALL failures
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      # --- Step 1: Clone the repo into the runner ---
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- Step 2: Install the requested Python version ---
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # --- Step 3: Install build, package & test dependencies ---
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -e ".[dev]"
+
+      # --- Step 4: Run the tests ---
+      - name: Run tests
+        run: |
+          python -m pytest tests/ -v --tb=short -W ignore::UserWarning -W ignore::DeprecationWarning -W ignore::FutureWarning -m "not benchmark and not integration"
+        env:
+          PYTHONHASHSEED: "42"

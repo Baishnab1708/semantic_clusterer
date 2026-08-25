@@ -1,0 +1,101 @@
+/* Override the default sidebar width variable to make the right TOC wider */
+:root {
+  --md-sidebar-width: 20rem !important;
+}
+
+/* Custom header badge "SC" instead of default logo */
+.md-header__button.md-logo {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  margin-right: 0.4rem;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.md-header__button.md-logo::before {
+  content: "SC" !important;
+}
+.md-header__button.md-logo svg {
+  display: none !important;
+}
+
+/* Increase the size of the header title a bit and make it bold */
+.md-header__title {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.015em !important;
+  margin-left: 0.5rem !important;
+}
+
+/* Make the search form thinner, compact, and aligned vertically with the heading */
+.md-search {
+  width: 17rem !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+.md-search__form {
+  height: 1.8rem !important;
+  border-radius: 20px !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 0.1rem !important; /* nudge down to align with heading */
+}
+.md-search__input {
+  height: 1.8rem !important;
+  font-size: 0.75rem !important;
+  color: #ffffff !important;
+  padding-left: 2rem !important;
+}
+.md-search__icon[for="__search"] svg {
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+}
+.md-search__icon[for="__search"] {
+  top: 0.5rem !important; /* center magnifying glass icon vertically */
+  left: 0.65rem !important;
+}
+
+/* Style H2 subheadings: make them a bit larger and well separated with a bottom border */
+.md-typeset h2 {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1.0rem !important;
+  letter-spacing: -0.015em !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-bottom: 0.4rem !important;
+}
+
+/* Hide the redundant left sidebar navigation on desktop (since tabs are at the top) */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    display: none !important;
+  }
+  
+  /* Shift main content to the left to occupy the freed space */
+  .md-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* Make content layout wider and cleaner */
+.md-grid {
+  max-width: 86rem !important;
+}
+
+/* Make H1 titles look bolder and darker in light mode */
+.md-typeset h1 {
+  font-weight: 800 !important;
+  color: #111827 !important; /* Tailwind gray-900 */
+}
+[data-md-color-scheme="slate"] .md-typeset h1 {
+  color: #f9fafb !important; /* Slate light gray */
+}

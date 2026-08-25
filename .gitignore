@@ -1,0 +1,141 @@
+# --- Byte-compiled / optimized / DLL files ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# --- Distribution / packaging ---
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+pip-wheel-metadata/
+
+# --- Virtual environments ---
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Test / coverage artifacts ---
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.ruff_cache/
+
+# --- Type checkers ---
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+
+# --- Jupyter / IPython ---
+.ipynb_checkpoints
+profile_default/
+ipython_config.py
+
+# --- IDEs / editors ---
+.idea/
+.vscode/
+.kiro/
+*.swp
+*.swo
+*~
+
+# --- pyenv / pipenv / poetry / pdm ---
+.python-version
+Pipfile.lock
+poetry.lock
+__pypackages__/
+
+# --- Translations / docs ---
+*.mo
+*.pot
+docs/_build/
+site/
+.docusaurus/
+.astro/
+node_modules/
+out/
+
+# --- Model / runtime caches ---
+.cache/
+models/
+*.onnx
+~/.cache/semantic_clusterer/
+
+# --- OS / misc ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Local logs and debug files ---
+*.log
+*.tmp
+*.bak
+
+
+# --- Project-private artifacts ---
+/output/
+/fixtures_local/
+/my_fitted_model/
+/my_fitted_split/
+/scratch_debug/
+
+# --- Local developer scratch / test scripts ---
+/test.py
+/test_2.py
+/test_simple.py
+/tiny_test.py
+/extract_ref.py
+
+# --- Benchmark intermediate cache ---
+benchmarks/cache/
+
+# --- Local analysis artifacts and reports ---
+/clusterer_deep_analysis.md
+/clusterer_deep_analysis_report.md
+/deep_analysis.md
+/implementation_plan.md
+
+# --- Local developer test & model artifacts ---
+/production_lifecycle_test.py
+prod_clusterer_model/
+prod_ksplit_model/
+demo_clusterer_model/
+demo_ksplit_model/
+/run_benchmarks_all.ps1
+/run_production_eval_all.ps1
+/demo_walkthrough.ipynb
+
+
+

@@ -1,0 +1,26 @@
+{
+  "tiny": {
+    "tier": "tiny",
+    "fixture": "tiny_60",
+    "score": 0.859865,
+    "ari": 1.0,
+    "floor": 0.35,
+    "n_clusters": 7
+  },
+  "small": {
+    "tier": "small",
+    "fixture": "small_1500",
+    "score": 0.832445,
+    "ari": 0.988372,
+    "floor": 0.6,
+    "n_clusters": 26
+  },
+  "medium": {
+    "tier": "medium",
+    "fixture": "medium_15000",
+    "score": 0.845052,
+    "ari": 0.999551,
+    "floor": 0.6,
+    "n_clusters": 83
+  }
+}
