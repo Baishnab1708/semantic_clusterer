@@ -746,6 +746,15 @@ python examples/07_advanced_azure_openai.py
 
 ---
 
+## Community & Feedback
+
+We'd love to hear your feedback and feature requests!
+- 💬 **Feedback Form**: [Share your use cases and feature requests here](https://forms.gle/u1djkvY9HYqua1CdA) (takes < 1 min)
+- 🐛 **Issue Tracker**: [Report bugs or request features](https://github.com/Baishnab1708/semantic_clusterer/issues)
+- ⭐ **Star the repo**: If you find this useful, please star the [GitHub repository](https://github.com/Baishnab1708/semantic_clusterer)!
+
+---
+
 ## License
 
 [MIT](LICENSE)

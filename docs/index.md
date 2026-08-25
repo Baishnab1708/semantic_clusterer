@@ -322,6 +322,15 @@ Use the directory map below to explore specific advanced topics across the guide
 
 ---
 
+## 12. Community & Feedback
+
+We'd love to hear how you are using `semantic_clusterer` and what features you'd like in v0.2.0!
+- 💬 **Feedback Form**: [Share your feedback & vote on upcoming features](https://forms.gle/u1djkvY9HYqua1CdA)
+- 🐛 **GitHub Issues**: [Report an issue or suggest an improvement](https://github.com/Baishnab1708/semantic_clusterer/issues)
+- ⭐ **GitHub Repository**: [Star us on GitHub](https://github.com/Baishnab1708/semantic_clusterer)
+
+---
+
 ## License
 
 This library is licensed under the [MIT License](https://github.com/Baishnab1708/semantic_clusterer/blob/main/LICENSE).
