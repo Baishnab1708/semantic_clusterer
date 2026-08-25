@@ -1,0 +1,2535 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A production-ready Python library for unsupervised semantic text clustering at scale. Ships with a built-in ONNX embedder, an adaptive multi-tier pipeline, and two focused public classes.">
+      
+      
+        <meta name="author" content="semantic_clusterer contributor">
+      
+      
+        <link rel="canonical" href="https://Baishnab1708.github.io/semantic_clusterer/working/">
+      
+      
+        <link rel="prev" href="../user_guide/">
+      
+      
+        <link rel="next" href="../changelog/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>How It Works - Semantic Clusterer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-semantic_clusterer-works" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Semantic Clusterer" class="md-header__button md-logo" aria-label="Semantic Clusterer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Semantic Clusterer
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How It Works
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Baishnab1708/semantic_clusterer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    semantic_clusterer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../user_guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  User Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  How It Works
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Semantic Clusterer" class="md-nav__button md-logo" aria-label="Semantic Clusterer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Semantic Clusterer
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Baishnab1708/semantic_clusterer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    semantic_clusterer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Works
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-design-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Design philosophy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-end-to-end-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The end-to-end pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The end-to-end pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-preprocessing-and-deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Preprocessing and deduplication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-embedding-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Embedding layer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Embedding layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adapters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-onnx-embedder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in ONNX embedder
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-dataset-profiling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Dataset profiling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-dimension-bands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Dimension bands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-tier-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tier routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-semanticclusterer-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. SemanticClusterer tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. SemanticClusterer tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiny-pipelinetinypy-exact-hierarchical-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiny (pipeline/tiny.py) - exact hierarchical search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#small-pipelinesmallpy-umap-hdbscan-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small (pipeline/small.py) - UMAP + HDBSCAN sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#medium-pipelinemediumpy-profiled-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Medium (pipeline/medium.py) - profiled sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-pipelinelargepy-shard-cluster-stitch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large (pipeline/large.py) - shard, cluster, stitch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-the-scoring-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. The scoring objective
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-granularity-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Granularity system
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-post-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Post-processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-semanticksplit-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. SemanticKSplit internals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. SemanticKSplit internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithm-selection-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithm selection matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-algorithms-k_algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The algorithms (k_algorithms/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-restart-and-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-restart and selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empty-cluster-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Empty-cluster repair
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permutation-invariance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permutation invariance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-keyword-and-topic-label-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Keyword and topic-label generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Keyword and topic-label generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c-tf-idf-keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c-TF-IDF keywords
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-the-fitted-state-persistence-and-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. The fitted state, persistence, and prediction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. The fitted state, persistence, and prediction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fittedstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FittedState
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save-format-manifest-schema-v3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Save format (manifest schema v3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prediction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-out-of-distribution-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Out-of-distribution calibration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Out-of-distribution calibration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-global-outlier-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Global Outlier Threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-per-cluster-adaptive-thresholds-default-auto-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Per-Cluster Adaptive Thresholds (Default "auto" Mode)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-determinism-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Determinism model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-quality-floors-and-confidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Quality floors and confidence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-oversized-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Oversized datasets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-module-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Module map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-design-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Design philosophy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-end-to-end-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The end-to-end pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The end-to-end pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-preprocessing-and-deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Preprocessing and deduplication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-embedding-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Embedding layer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Embedding layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adapters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-onnx-embedder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in ONNX embedder
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-dataset-profiling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Dataset profiling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-dimension-bands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Dimension bands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-tier-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tier routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-semanticclusterer-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. SemanticClusterer tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. SemanticClusterer tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tiny-pipelinetinypy-exact-hierarchical-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiny (pipeline/tiny.py) - exact hierarchical search
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#small-pipelinesmallpy-umap-hdbscan-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small (pipeline/small.py) - UMAP + HDBSCAN sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#medium-pipelinemediumpy-profiled-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Medium (pipeline/medium.py) - profiled sweep
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#large-pipelinelargepy-shard-cluster-stitch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large (pipeline/large.py) - shard, cluster, stitch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-the-scoring-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. The scoring objective
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-granularity-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Granularity system
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-post-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Post-processing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-semanticksplit-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. SemanticKSplit internals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. SemanticKSplit internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithm-selection-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithm selection matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-algorithms-k_algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The algorithms (k_algorithms/)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-restart-and-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-restart and selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empty-cluster-repair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Empty-cluster repair
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permutation-invariance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permutation invariance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-keyword-and-topic-label-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Keyword and topic-label generation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Keyword and topic-label generation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c-tf-idf-keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c-TF-IDF keywords
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topic-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-the-fitted-state-persistence-and-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. The fitted state, persistence, and prediction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. The fitted state, persistence, and prediction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fittedstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FittedState
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save-format-manifest-schema-v3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Save format (manifest schema v3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prediction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-out-of-distribution-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Out-of-distribution calibration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Out-of-distribution calibration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-global-outlier-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Global Outlier Threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-per-cluster-adaptive-thresholds-default-auto-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Per-Cluster Adaptive Thresholds (Default "auto" Mode)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-determinism-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Determinism model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-quality-floors-and-confidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Quality floors and confidence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-oversized-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Oversized datasets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-module-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Module map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="how-semantic_clusterer-works"><strong>How semantic_clusterer Works</strong><a class="headerlink" href="#how-semantic_clusterer-works" title="Permanent link">&para;</a></h1>
+<p>This document explains the <strong>internals</strong> of <code>semantic_clusterer</code>: the
+architecture, the per-tier algorithms, the scoring objective, the adaptive
+parameter system, and the determinism model. It is written for contributors and
+for advanced users who want to understand <em>why</em> the library produces the
+results it does.</p>
+<p>If you just want to use the library, start with <a href="../"><code>index.md</code></a> and
+<a href="../user_guide/"><code>user_guide.md</code></a>. This document assumes you've read those.</p>
+<hr />
+<h2 id="1-design-philosophy">1. Design philosophy<a class="headerlink" href="#1-design-philosophy" title="Permanent link">&para;</a></h2>
+<p>The library is built around four principles:</p>
+<ol>
+<li>
+<p><strong>Zero required configuration.</strong> The default path - <code>SemanticClusterer()</code> -
+   must produce good clusters with no parameters. Every internal decision
+   (tier, reduction dimension, parameter grid) is derived from the data.</p>
+</li>
+<li>
+<p><strong>Two knobs, not twenty.</strong> Users get exactly one primary knob per class
+   (<code>cluster_granularity</code> / <code>quality</code>). Everything else that <em>could</em> be a knob
+   (tier, reduction method, UMAP/HDBSCAN parameters) is chosen automatically.
+   This is a deliberate constraint: fewer knobs means fewer ways to get it
+   wrong, and consistent results across users. Pipeline tier and dimensionality
+   reduction were once exposed as <code>strategy</code> / <code>reduction</code> config fields; they
+   were deliberately made internal so the public surface stays minimal and the
+   routing stays a pure function of the data (see <a href="#7-tier-routing">section 7</a>).</p>
+</li>
+<li>
+<p><strong>Adapt to the embedding, not the other way around.</strong> The library detects
+   the embedding dimension and selects a matching parameter grid (the
+   "dimension band" system). Swapping a 384-dim model for a 3072-dim one
+   requires zero retuning.</p>
+</li>
+<li>
+<p><strong>Determinism within a fixed environment.</strong> Given the same seed and the same
+   dependency versions, runs are reproducible. The single place where a
+   third-party library touches numpy's global RNG (HDBSCAN) is wrapped in a
+   save/restore context manager.</p>
+</li>
+</ol>
+<p>A useful consequence: <strong>the only hardcoded "magic numbers" in the library live
+in two small tables</strong> - the dimension-band grids (<code>pipeline/tuning.py</code>) and the
+granularity profiles (<code>pipeline/granularity.py</code>). Everything else is computed
+from the data profile.</p>
+<hr />
+<h2 id="2-the-end-to-end-pipeline">2. The end-to-end pipeline<a class="headerlink" href="#2-the-end-to-end-pipeline" title="Permanent link">&para;</a></h2>
+<p>Both public classes follow the same high-level flow. For <code>SemanticClusterer</code>
+the orchestrator is <code>SemanticClusterer._run_clustering</code> (in <code>core.py</code>); for
+<code>SemanticKSplit</code> it is <code>SemanticKSplit._run_split</code> (in <code>k_split.py</code>).</p>
+<pre class="mermaid"><code>graph TB
+    subgraph Input ["Data Input Layer"]
+        InTexts["Raw Text List"]
+        InConfig["Configuration (Knobs)"]
+    end
+
+    subgraph Preprocess ["Preprocessing &amp; Indexing"]
+        Clean["Unicode normalisation (NFKC) &amp; Clean"]
+        Dedupe["Deduplication (Embed once)"]
+        Index["Index Mapping (Unique &amp;harr; Original)"]
+    end
+
+    subgraph Embed ["Embedding Adapter Layer"]
+        Adapter["normalize_embedding_model"]
+        ONNX["Bundled ONNX MiniLM (Default)"]
+        Custom["Custom (SentenceTransformers / LangChain / OpenAI)"]
+    end
+
+    subgraph Profiler ["Resolution &amp; Profiler"]
+        Band["resolve_dim_band &lt;br&gt;(low / mid / high / xhigh)"]
+        Profile["profile_dataset &lt;br&gt;(size, duplicates, density, tendency)"]
+    end
+
+    InTexts --&gt; Clean
+    Clean --&gt; Dedupe
+    Dedupe --&gt; Adapter
+    ONNX -.-&gt; Adapter
+    Custom -.-&gt; Adapter
+    Adapter --&gt; Band
+    Band --&gt; Profile</code></pre>
+<h3 id="end-to-end-sequence">End-to-end sequence<a class="headerlink" href="#end-to-end-sequence" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>graph TD
+    A["Input: texts List"] --&gt; B["1. Preprocess: clean, deduplicate, build index map"]
+    B --&gt;|Unique texts| C["2. Embed: ONNX MiniLM or Custom"]
+    C --&gt;|"(N, D) float32"| D["3. Resolve Dim Band: low, mid, high, xhigh"]
+    D --&gt; E["4. Profile Dataset: rank, density, duplicates, tendency"]
+    E --&gt; F["5. Route to Tier: tiny, small, medium, large or KSplit algo"]
+    F --&gt; G["6. Cluster: tier-specific algorithm"]
+    G --&gt;|Unique labels| H["7. Post-process: noise recovery, splitting, merging"]
+    H --&gt; I["8. Quality Floor Check: calculate confidence level"]
+    I --&gt; J["9. Project Labels: map unique back to original inputs"]
+    J --&gt; K["Output: numpy int32 array"]</code></pre>
+<p>Progress through these phases is reported through <code>PipelineProgress</code>
+(<code>utils/progress.py</code>) and timed into <code>report.phase_timings</code>.</p>
+<hr />
+<h2 id="3-preprocessing-and-deduplication">3. Preprocessing and deduplication<a class="headerlink" href="#3-preprocessing-and-deduplication" title="Permanent link">&para;</a></h2>
+<p><code>TextPreprocessor</code> (<code>preprocessing/clean.py</code>) runs before embedding:</p>
+<ol>
+<li><strong>Missing-value handling</strong> - <code>None</code>, float <code>NaN</code>, numpy <code>NaN</code>, and pandas
+   <code>NA</code>/<code>NaT</code> are detected and mapped to the filtered label <code>-1</code>. Non-string,
+   non-missing objects (dicts, lists) raise <code>TypeError</code>.</li>
+<li><strong>Unicode normalisation</strong> - NFKC.</li>
+<li><strong>Lowercasing</strong> (default on).</li>
+<li><strong>Punctuation removal</strong> (default on) - replaced with spaces.</li>
+<li><strong>Whitespace normalisation</strong> - runs collapsed to single spaces, trimmed.</li>
+<li><strong>Deduplication</strong> - identical cleaned strings are embedded once.</li>
+</ol>
+<p>The key output is the <strong>index map</strong>: <code>original_to_processed</code> maps every input
+row to either a processed-row index or <code>-1</code> (filtered). This is what lets the
+library return a label array aligned with the <em>original</em> input order, with
+duplicates sharing a label and missing rows getting <code>-1</code>.</p>
+<p>Deduplication matters for cost: a corpus with many repeated strings only pays
+to embed and cluster the unique set.</p>
+<hr />
+<h2 id="4-embedding-layer">4. Embedding layer<a class="headerlink" href="#4-embedding-layer" title="Permanent link">&para;</a></h2>
+<h3 id="adapters">Adapters<a class="headerlink" href="#adapters" title="Permanent link">&para;</a></h3>
+<p><code>normalize_embedding_model</code> (<code>embedding/adapters.py</code>) wraps whatever you pass
+into a uniform <code>.embed(texts, batch_size)</code> interface by sniffing the object:</p>
+<table>
+<thead>
+<tr>
+<th>Detected interface</th>
+<th>Adapter</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.embed(...)</code></td>
+<td><code>NativeEmbedAdapter</code></td>
+<td>Auto-detects whether <code>batch_size</code> is accepted</td>
+</tr>
+<tr>
+<td><code>.encode(...)</code></td>
+<td><code>EncodeAdapter</code></td>
+<td>SentenceTransformers/HF - passes <code>batch_size</code> natively</td>
+</tr>
+<tr>
+<td><code>.embed_documents(...)</code></td>
+<td><code>LangchainAdapter</code></td>
+<td>LangChain - ignores <code>batch_size</code> (it batches internally)</td>
+</tr>
+<tr>
+<td>callable</td>
+<td><code>CallableAdapter</code></td>
+<td>Manually chunks into <code>batch_size</code> blocks to protect remote APIs</td>
+</tr>
+</tbody>
+</table>
+<p>Basic Python types (<code>str</code>, <code>dict</code>, etc.) are rejected even though some have an
+<code>.encode</code> method, to avoid accidentally treating a string as a model.</p>
+<h3 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h3>
+<p><code>validate_embeddings</code> enforces the contract: 2D shape <code>(n_texts, dim)</code>, row
+count matches text count, numeric dtype, no <code>NaN</code>/<code>Inf</code>, cast to <code>float32</code>. A
+1D array is accepted only for a single text and reshaped to <code>(1, dim)</code>.</p>
+<h3 id="built-in-onnx-embedder">Built-in ONNX embedder<a class="headerlink" href="#built-in-onnx-embedder" title="Permanent link">&para;</a></h3>
+<p><code>OnnxEmbedder</code> (<code>embedding/onnx_model.py</code>) is the default when no model is
+supplied:</p>
+<ul>
+<li><strong>all-MiniLM-L6-v2</strong>, 384-dim, max sequence length 256.</li>
+<li>Downloaded on first use from a pinned HuggingFace commit, <strong>checksum-verified</strong>
+  (SHA256) and cached to <code>~/.cache/semantic_clusterer/</code>. A corrupt cache file is
+  deleted and re-downloaded once.</li>
+<li>Hardware-accelerated inference via <code>onnxruntime</code> using dynamic execution providers (prioritizing GPU/NPU EPs, falling back to CPU). CPU threads set to <code>os.cpu_count()</code>.</li>
+<li>Mean-pooling over token embeddings with the attention mask, then L2
+  normalisation.</li>
+<li>A <code>tqdm</code> progress bar appears for multi-batch runs.</li>
+</ul>
+<p>Because it already L2-normalises, the pipeline skips re-normalising its output;
+custom models are normalised by the pipeline when <code>normalize_embeddings=True</code>.</p>
+<hr />
+<h2 id="5-dataset-profiling">5. Dataset profiling<a class="headerlink" href="#5-dataset-profiling" title="Permanent link">&para;</a></h2>
+<p><code>compute_dataset_profile</code> (<code>pipeline/profile.py</code>) builds a bounded statistical
+summary used to tune the medium and large pipelines. It is deliberately
+<strong>sub-linear</strong>: it samples rows (<code>min(N, max(1024, min(4096, 16·√N)))</code>) and
+never materialises an <code>N×N</code> matrix.</p>
+<p>The <code>DatasetProfile</code> fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it estimates</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>effective_rank</code></td>
+<td>Intrinsic dimensionality</td>
+<td>Randomised TruncatedSVD; rank capturing 90% variance</td>
+</tr>
+<tr>
+<td><code>variance_decay_ratio</code></td>
+<td>Variance captured at effective rank</td>
+<td>SVD explained-variance sum</td>
+</tr>
+<tr>
+<td><code>local_density_mean</code> / <code>_cv</code></td>
+<td>Neighbourhood tightness + its variation</td>
+<td>k-NN (cosine) distances</td>
+</tr>
+<tr>
+<td><code>distance_concentration</code></td>
+<td>How "samey" pairwise distances are</td>
+<td>sampled pair cosine distances</td>
+</tr>
+<tr>
+<td><code>duplicate_ratio</code> / <code>near_duplicate_ratio</code></td>
+<td>Fraction of (near-)duplicates</td>
+<td>nearest-neighbour distance thresholds</td>
+</tr>
+<tr>
+<td><code>cluster_tendency</code></td>
+<td>Clusterability</td>
+<td>Hopkins-style real-vs-random density ratio</td>
+</tr>
+<tr>
+<td><code>imbalance_tendency</code></td>
+<td>Likely cluster size skew</td>
+<td>KMeans probe + size entropy</td>
+</tr>
+<tr>
+<td><code>memory_pressure</code></td>
+<td>Expected working-set vs a budget</td>
+<td><code>N·D</code> byte estimate vs ~6 GB</td>
+</tr>
+</tbody>
+</table>
+<p>These values drive: the target reduction dimension, the UMAP neighbour/component
+candidates, the HDBSCAN <code>min_cluster_size</code>/<code>min_samples</code> grids, refinement
+trigger thresholds, and (for the large tier) the shard size and coarse partition
+count. The profile is also recorded in <code>report.dataset_profile</code>.</p>
+<hr />
+<h2 id="6-dimension-bands">6. Dimension bands<a class="headerlink" href="#6-dimension-bands" title="Permanent link">&para;</a></h2>
+<p>Defined in <code>dim_bands.py</code>. Embedding dimension <code>D</code> is resolved into one of four
+<strong>bands</strong>, each with its own parameter grid:</p>
+<table>
+<thead>
+<tr>
+<th>Band</th>
+<th>Inclusive range</th>
+<th>Example model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>low</code></td>
+<td>256 – 511</td>
+<td>MiniLM-L6-v2 (384)</td>
+</tr>
+<tr>
+<td><code>mid</code></td>
+<td>512 – 1023</td>
+<td>MPNet-base-v2 (768)</td>
+</tr>
+<tr>
+<td><code>high</code></td>
+<td>1024 – 2047</td>
+<td>BGE-large (1024), text-embedding-3-small (1536)</td>
+</tr>
+<tr>
+<td><code>xhigh</code></td>
+<td>2048 – 16384</td>
+<td>text-embedding-3-large (3072)</td>
+</tr>
+</tbody>
+</table>
+<p><code>resolve_dim_band(D)</code>:</p>
+<ul>
+<li><code>D &lt; 1</code> → <code>ValueError</code>.</li>
+<li><code>1 &lt;= D &lt; 256</code> → falls back to <code>low</code> with a <code>UserWarning</code>.</li>
+<li><code>D &gt; 16384</code> → falls back to <code>xhigh</code> with a <code>UserWarning</code>.</li>
+</ul>
+<p><code>SUPPORTED_DIM_BANDS</code> is the public, read-only mapping. The whole point of bands
+is that <strong>parameter grids scale with embedding geometry</strong> - higher-dimensional
+spaces concentrate cosine similarities, so merge thresholds, PCA targets, and
+UMAP settings differ per band. This is why changing embedder requires no
+retuning.</p>
+<p>The grids live in <code>pipeline/tuning.py</code> as <code>get_band_grid(band, tier)</code>, the
+single source of truth for <code>(band, tier)</code> parameter sets. A <code>BandGrid</code>
+(<code>dim_bands.py</code>) holds PCA targets, UMAP neighbour/component candidates, HDBSCAN
+ratios/min_samples/methods, and the tiny-tier K grid.</p>
+<hr />
+<h2 id="7-tier-routing">7. Tier routing<a class="headerlink" href="#7-tier-routing" title="Permanent link">&para;</a></h2>
+<p><code>_BaseConfig.get_strategy_for_size(N)</code> (in <code>config.py</code>) maps the number of
+<strong>unique</strong> texts to a tier using fixed thresholds:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Unique N</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tiny</code></td>
+<td><code>N &lt;= 150</code></td>
+</tr>
+<tr>
+<td><code>small</code></td>
+<td><code>151 &lt;= N &lt;= 5000</code></td>
+</tr>
+<tr>
+<td><code>medium</code></td>
+<td><code>5001 &lt;= N &lt;= 50000</code></td>
+</tr>
+<tr>
+<td><code>large</code></td>
+<td><code>50001 &lt;= N &lt;= 200000</code></td>
+</tr>
+</tbody>
+</table>
+<p>This routing is <strong>purely a function of N</strong> - there is no user override (the
+former <code>strategy</code> config field was removed). Reduction is likewise automatic:
+<code>get_reduction_for_strategy(tier)</code> returns <code>None</code> for tiny/small (cluster in the
+embedding/UMAP space directly) and <code>"pca"</code> for medium/large.</p>
+<p><code>SemanticClusterer._cluster_embeddings</code> also short-circuits the trivial cases:
+<code>N == 1</code> → <code>[0]</code>, <code>N == 2</code> → <code>[0, 1]</code>.</p>
+<hr />
+<h2 id="8-semanticclusterer-tiers">8. SemanticClusterer tiers<a class="headerlink" href="#8-semanticclusterer-tiers" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TD
+    A[Input Texts] --&gt; B[Deduplication &amp; Preprocessing]
+    B --&gt; C[Embedding Generation &lt;br&gt;&lt;i&gt;ONNX MiniLM or Custom&lt;/i&gt;]
+    C --&gt; D[Dataset Profile &amp; Routing]
+
+    D --&gt;|N &lt;= 150| E1[Tiny Tier &lt;br&gt;&lt;i&gt;Exact Agglomerative&lt;/i&gt;]
+    D --&gt;|151 &lt;= N &lt;= 5000| E2[Small Tier &lt;br&gt;&lt;i&gt;PCA + UMAP + HDBSCAN Sweep&lt;/i&gt;]
+    D --&gt;|5001 &lt;= N &lt;= 50000| E3[Medium Tier &lt;br&gt;&lt;i&gt;Profile-Guided Sweep&lt;/i&gt;]
+    D --&gt;|N &gt; 50000| E4[Large Tier &lt;br&gt;&lt;i&gt;Sharded K-Means + centroid stitching&lt;/i&gt;]
+
+    E1 --&gt; F[c-TF-IDF Topic Representation]
+    E2 --&gt; F
+    E3 --&gt; F
+    E4 --&gt; F
+
+    F --&gt; G[Clustering Output &lt;br&gt;&lt;i&gt;Simple groups or detailed reports&lt;/i&gt;]</code></pre>
+<p>Each tier is a self-contained module under <code>pipeline/</code>. All return an <code>int32</code>
+label array over the unique rows, with <code>-1</code> for noise.</p>
+<h3 id="tiny-pipelinetinypy-exact-hierarchical-search">Tiny (<code>pipeline/tiny.py</code>) - exact hierarchical search<a class="headerlink" href="#tiny-pipelinetinypy-exact-hierarchical-search" title="Permanent link">&para;</a></h3>
+<p>For <code>N &lt;= 150</code>, an exhaustive, deterministic approach is affordable:</p>
+<ol>
+<li><strong>Degenerate cases</strong> - <code>N=0/1</code>, all-identical embeddings (one cluster),
+   <code>N=2</code> (split unless cosine <span class="arithmatex">\(\ge 0.95\)</span>).</li>
+<li><strong>Dual linkage matrices</strong> - Ward linkage on normalized vectors, and average linkage on cosine distance. Both are always constructed and evaluated.</li>
+<li><strong>Five candidate sources for K</strong>:</li>
+<li><em>Multi-scale dendrogram-jump</em> - extracts all merge heights with z-score gap significance <span class="arithmatex">\(&gt;1.0\)</span> (up to 5 candidates).</li>
+<li><em>Adaptive K-grid</em> - dynamically generated list of K values based on <span class="arithmatex">\(N\)</span> (linear steps for <span class="arithmatex">\(N \le 30\)</span>; logarithmic scaling up to <span class="arithmatex">\(N//2\)</span> for larger <span class="arithmatex">\(N\)</span>).</li>
+<li><em>Silhouette-optimal</em> - best silhouette score over the grid for both linkages.</li>
+<li><em>Miniature UMAP+HDBSCAN</em> - density-based clustering for <span class="arithmatex">\(N \ge 15\)</span>, with scale-adaptive neighbors, components, and min cluster size.</li>
+<li><em>Spectral clustering</em> - affinity-based clustering for <span class="arithmatex">\(N \ge 8\)</span> on a precomputed cosine-similarity matrix.</li>
+<li><strong>Label-aware deduplication</strong> - candidates are deduplicated by <code>(K, partition_hash)</code>, preserving distinct cluster assignments at the same <span class="arithmatex">\(K\)</span>.</li>
+<li><strong>Score every candidate</strong> with the shared scoring objective (section 9) and
+   pick the best, tie-broken by: maximum score <span class="arithmatex">\(\rightarrow\)</span> smaller <span class="arithmatex">\(K\)</span> <span class="arithmatex">\(\rightarrow\)</span> density-based/spectral priority order.</li>
+<li><strong>Post-processing</strong> - granularity-controlled centroid merge pass.</li>
+</ol>
+<h3 id="small-pipelinesmallpy-umap-hdbscan-sweep">Small (<code>pipeline/small.py</code>) - UMAP + HDBSCAN sweep<a class="headerlink" href="#small-pipelinesmallpy-umap-hdbscan-sweep" title="Permanent link">&para;</a></h3>
+<p>For <code>151 &lt;= N &lt;= 5000</code>:</p>
+<ol>
+<li><strong>Optional PCA pre-reduction</strong> - for non-low bands, reduce toward a
+   band-appropriate target before the UMAP sweep. (Low band is already compact.)</li>
+<li><strong>Adaptive anchors</strong> - UMAP <code>n_neighbors</code> and <code>n_components</code> from
+   <code>reduction/umap_utils.py</code> (log-scaled in N and dim).</li>
+<li><strong>Primary sweep</strong> - a grid over UMAP <code>(n_neighbors, n_components, min_dist)</code> ×
+   HDBSCAN <code>(min_cluster_size, min_samples, method)</code>, with UMAP embeddings
+   cached per <code>(nn, nc, min_dist)</code> so each reduction is computed once.</li>
+<li><strong>Refinement</strong> - only when the best solution looks weak or blob-like (low
+   score, high noise, or a dominant cluster); re-sweeps a couple of neighbour
+   multipliers.</li>
+<li><strong>Winner refit</strong> - recompute true DBCV on the winning UMAP embedding.</li>
+<li><strong>Post-processing</strong> - confident noise recovery, oversized-cluster splitting,
+   near-duplicate merge, then a second noise recovery, then the granularity
+   merge pass.</li>
+</ol>
+<p>If <code>umap-learn</code> is unavailable, the sweep degrades to PCA-only HDBSCAN and emits
+a one-time <code>UserWarning</code>.</p>
+<h3 id="medium-pipelinemediumpy-profiled-sweep">Medium (<code>pipeline/medium.py</code>) - profiled sweep<a class="headerlink" href="#medium-pipelinemediumpy-profiled-sweep" title="Permanent link">&para;</a></h3>
+<p>For <code>5001 &lt;= N &lt;= 50000</code>, similar to small but profile-driven:</p>
+<ol>
+<li><strong>xhigh PCA pre-reduction</strong> (when band is xhigh) to the first PCA target.</li>
+<li><strong>Profile</strong> the dataset.</li>
+<li><strong>Reduction candidates</strong> - a small set of PCA target dimensions around a
+   profile-derived center (<code>compute_medium_reduction_dimension</code> +
+   <code>compute_reduction_candidates</code>). Each representation is built once and cached.</li>
+<li><strong>HDBSCAN candidate generation</strong> from band ratios scaled by N, with
+   profile-aware <code>min_samples</code> and method selection.</li>
+<li><strong>Two evaluation paths per representation</strong> - direct HDBSCAN on the
+   PCA-reduced space, and HDBSCAN on a further UMAP embedding (when UMAP is
+   available and the representation is informative).</li>
+<li><strong>Refinement</strong> when triggered by <code>should_trigger_refinement</code> against
+   profile-derived thresholds.</li>
+<li><strong>Post-processing</strong> identical in spirit to small (recover/split/merge) plus
+   the granularity merge pass.</li>
+</ol>
+<h3 id="large-pipelinelargepy-shard-cluster-stitch">Large (<code>pipeline/large.py</code>) - shard, cluster, stitch<a class="headerlink" href="#large-pipelinelargepy-shard-cluster-stitch" title="Permanent link">&para;</a></h3>
+<p>For <code>50001 &lt;= N &lt;= 200000</code>, a divide-and-conquer strategy keeps memory bounded:</p>
+<ol>
+<li><strong>Multi-reduction PCA search</strong> - generates 2 candidates around a profile-derived target dimension and fits PCA representations.</li>
+<li><strong>Coarse partition</strong> - <code>MiniBatchKMeans</code> into <code>n_coarse</code> partitions, sized so each shard targets <code>compute_large_target_shard_size</code> rows.</li>
+<li><strong>Shard balancing</strong> - recursively split oversized shards (<code>_balance_shards</code>).</li>
+<li><strong>Per-shard HDBSCAN with granularity-aware spread</strong> - runs multi-reduction and <code>mcs_candidate_spread(gran_profile, shard_size)</code> across both <code>eom</code> and <code>leaf</code> methods, with a conservative centroid fallback when a shard fails to cluster.</li>
+<li><strong>Per-shard quality tracking</strong> - scores recorded; if &gt;30% of shards are weak, confidence is lowered.</li>
+<li><strong>Global stitching</strong> (<code>_global_stitch_clusters</code>) - merges clusters that are near-duplicates <strong>across</strong> shard boundaries using a union-find over mutual nearest centroids with radius checks (similarity threshold 0.93–0.96). Intra-shard pairs are never stitched.</li>
+<li><strong>Full post-processing pipeline</strong> - noise recovery with confidence, weak oversized cluster splitting (<code>split_oversized_clusters</code>), near-duplicate merging, granularity-driven centroid merge (<code>merge_clusters_by_centroid_similarity</code>), and a <code>CentroidFallback</code> pass if residual noise exceeds 30%.</li>
+</ol>
+<blockquote>
+<p>[!WARNING]
+<strong>Large pipeline validation status:</strong> The <code>large</code> tier has been upgraded to match the multi-reduction and granularity post-processing architecture of the medium tier, but <strong>has not yet been benchmarked or tested</strong> in v0.1.0 releases. Tiny, small, and medium tiers are fully benchmarked and verified.</p>
+</blockquote>
+<hr />
+<h2 id="9-the-scoring-objective">9. The scoring objective<a class="headerlink" href="#9-the-scoring-objective" title="Permanent link">&para;</a></h2>
+<p><code>score_clustering</code> (<code>pipeline/quality.py</code>) is the shared, label-free objective
+that every tier uses to choose between candidate clusterings. It returns a
+composite <code>score</code> in <code>[0, 1]</code> and the component metrics.</p>
+<p>The composite is a weighted sum of positive terms minus penalties:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Default weight</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>density</code> (HDBSCAN DBCV, when available)</td>
+<td>0.15</td>
+<td>reward</td>
+</tr>
+<tr>
+<td><code>coverage</code> (<code>1 − noise_ratio</code>)</td>
+<td>0.15</td>
+<td>reward</td>
+</tr>
+<tr>
+<td><code>cohesion</code> (size-weighted mean within-cluster similarity)</td>
+<td>0.20</td>
+<td>reward</td>
+</tr>
+<tr>
+<td><code>separation</code> (mean centroid-to-centroid distance)</td>
+<td>0.22</td>
+<td>reward</td>
+</tr>
+<tr>
+<td><code>stability</code> (cluster size balance)</td>
+<td>0.10</td>
+<td>reward</td>
+</tr>
+<tr>
+<td><code>fragmentation_penalty</code> (size-relative + count-relative micro-clusters)</td>
+<td>0.10</td>
+<td>penalty</td>
+</tr>
+<tr>
+<td><code>largest_cluster_penalty</code> (giant-cluster excess over a 0.10 baseline)</td>
+<td>0.10</td>
+<td>penalty</td>
+</tr>
+</tbody>
+</table>
+<p>Notable details:</p>
+<ul>
+<li><strong>Density weight redistribution.</strong> When HDBSCAN DBCV is unavailable (e.g.
+  PCA-only fallback), the density weight is redistributed proportionally across
+  the other positive terms, so scores remain comparable.</li>
+<li><strong>High-dimensional separation scaling.</strong> High-dimensional embeddings (<span class="arithmatex">\(D \ge 512, 1024\)</span>) naturally compress cosine separation into a narrow low range. Separation is scaled up dynamically to give high-dimensional embeddings a fair comparison.</li>
+<li><strong>Low-K separation zeroing.</strong> For <span class="arithmatex">\(K \le 3\)</span> on datasets with <span class="arithmatex">\(N &gt; 150\)</span>, separation is zeroed out to prevent trivial under-clustering on larger corpora.</li>
+<li><strong>Symmetric under-fragmentation dampening.</strong> On larger corpora (<span class="arithmatex">\(N &gt; 500\)</span>), if <span class="arithmatex">\(K &lt; \max(4, \text{count\_baseline} // 2)\)</span> where <span class="arithmatex">\(\text{count\_baseline} = \min(22, \lfloor\sqrt{N/3}\rfloor)\)</span>, separation is scaled by <span class="arithmatex">\(\frac{K}{K_{\text{threshold}}}\)</span>. This prevents trivial over-merging (e.g. <span class="arithmatex">\(K=4\)</span> on 12K texts) from dominating the scoring objective.</li>
+<li><strong>Fragmentation is size-aware and count-aware.</strong> Combines micro-cluster size thresholds (<span class="arithmatex">\(&lt;25\%\)</span> of expected cluster size) and count-relative penalties for <span class="arithmatex">\(K &gt; \text{count\_baseline}\)</span>.</li>
+<li><strong>Blob penalty.</strong> Penalises solutions containing clusters with very low internal cohesion (<span class="arithmatex">\(\text{mean similarity} &lt; 0.15\)</span>).</li>
+<li><strong>Empty/degenerate partitions</strong> score 0 with <code>largest_ratio = 1</code> and <code>noise_ratio = 1</code>.</li>
+</ul>
+<p><code>should_trigger_refinement</code> compares the component metrics against
+profile-derived thresholds (coverage, noise, giant-cluster ratio, stability) to
+decide whether a tier should run a second, narrower search.</p>
+<hr />
+<h2 id="10-granularity-system">10. Granularity system<a class="headerlink" href="#10-granularity-system" title="Permanent link">&para;</a></h2>
+<p><code>cluster_granularity</code> is realised by <code>pipeline/granularity.py</code>, which holds a
+<code>(preset, band)</code> table of <code>GranularityProfile</code> values. This is one of only two
+tables of hardcoded constants in the library, and they follow a single
+principle: <strong>cosine similarity concentrates as dimension rises, so merge
+thresholds decrease as the band rises.</strong></p>
+<p>A <code>GranularityProfile</code> carries:</p>
+<ul>
+<li><code>mcs_sqrt_coef</code> - the primary driver for the <code>min_cluster_size</code> floor, scaling as <code>coef * sqrt(N)</code>.</li>
+<li><code>mcs_sub_floor_ratio</code> - controls how aggressively to explore candidates below the floor.</li>
+<li><code>mcs_ratio_floor</code> and <code>mcs_absolute_floor</code> - upper and lower clamps on the floor.</li>
+<li><code>merge_centroid_threshold</code> - cosine similarity above which two clusters are merged.</li>
+<li><code>fragmentation_penalty_weight</code> - extra weight on fragmentation in scoring.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>Floor Coef</th>
+<th>Sub-floor ratio</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fine</code></td>
+<td>0.5 (~60 at 15k)</td>
+<td>0.4 (aggressive)</td>
+<td>Most clusters. Near-duplicate merge only.</td>
+</tr>
+<tr>
+<td><code>balanced</code></td>
+<td>0.7 (~85 at 15k)</td>
+<td>0.6 (moderate)</td>
+<td>Clean default. Meaningful merge pass.</td>
+</tr>
+<tr>
+<td><code>coarse</code></td>
+<td>1.2 (~147 at 15k)</td>
+<td>0.0 (none)</td>
+<td>Fewest, broadest clusters. Strong frag penalty.</td>
+</tr>
+</tbody>
+</table>
+<p><code>apply_mcs_floor</code> computes the floor. The sub-linear <code>sqrt(N)</code> scaling ensures the floor grows slowly with the corpus size, allowing the cluster count to grow naturally without collapsing into giant blobs. <code>mcs_candidate_spread</code> generates a 3-to-5 value search grid anchored around this floor, and the scoring objective picks the best K.</p>
+<p>If the user sets an explicit <code>min_cluster_size</code>, that value always wins and the granularity floor is ignored. The merge pass is <code>merge_clusters_by_centroid_similarity</code> (union-find, iterated to convergence).
+<code>merge_clusters_by_centroid_similarity</code> (union-find, iterated to convergence).</p>
+<hr />
+<h2 id="11-post-processing">11. Post-processing<a class="headerlink" href="#11-post-processing" title="Permanent link">&para;</a></h2>
+<p>Shared post-processing lives in <code>pipeline/postprocess.py</code> and runs after the
+core clustering in small/medium/large:</p>
+<ul>
+<li><strong><code>recover_noise_with_confidence</code></strong> - reassigns noise points to the nearest
+  cluster <em>only</em> when they're within an adaptive distance threshold and clearly
+  closer to one cluster than the runner-up. Cautious by design: ambiguous points
+  stay noise.</li>
+<li><strong><code>split_oversized_clusters</code></strong> - bisects weak, oversized clusters via a
+  sub-UMAP + sub-HDBSCAN pass, but <strong>only commits the split if the global score
+  improves</strong>. Cohesive or small clusters are left alone.</li>
+<li><strong><code>merge_near_duplicate_clusters</code></strong> - union-find merge of clusters whose
+  centroids exceed a high similarity threshold.</li>
+<li><strong><code>merge_clusters_by_centroid_similarity</code></strong> - the granularity-driven merge
+  (lower threshold, iterated to convergence).</li>
+<li><strong><code>compact_labels</code></strong> - remaps surviving labels to a contiguous <code>0..K-1</code> range,
+  preserving <code>-1</code>.</li>
+</ul>
+<p><code>CentroidFallback</code> (<code>clustering/centroid_fallback.py</code>) is the large-tier safety
+net: when residual noise is high, it assigns remaining noise points to the
+nearest valid centroid so the result isn't mostly <code>-1</code>.</p>
+<hr />
+<h2 id="12-semanticksplit-internals">12. SemanticKSplit internals<a class="headerlink" href="#12-semanticksplit-internals" title="Permanent link">&para;</a></h2>
+<p><code>SemanticKSplit</code> (<code>k_split.py</code>) guarantees exactly <code>k</code> non-empty clusters. It
+shares preprocessing, embedding, band resolution, and tier routing with
+<code>SemanticClusterer</code>, but the clustering step is different: it selects a single
+partition algorithm from a <code>(tier, k)</code> matrix rather than running a
+density-based sweep. It does <strong>not</strong> import <code>hdbscan</code>.</p>
+<pre class="mermaid"><code>graph TD
+    A["Input Texts"] --&gt; B["Deduplication &amp; Preprocessing"]
+    B --&gt; C["Embedding Generation &lt;br&gt;&lt;i&gt;ONNX MiniLM or Custom&lt;/i&gt;"]
+    C --&gt; D["Dataset Profile &amp; Routing"]
+
+    D --&gt;|"N &lt;= 150 &lt;br&gt;&lt;i&gt;tiny&lt;/i&gt;"| E1{"k value?"}
+    D --&gt;|"151 &lt;= N &lt;= 5000 &lt;br&gt;&lt;i&gt;small&lt;/i&gt;"| E2{"k value?"}
+    D --&gt;|"5001 &lt;= N &lt;= 50000 &lt;br&gt;&lt;i&gt;medium&lt;/i&gt;"| E3["balanced-kmeans"]
+    D --&gt;|"N &gt; 50000 &lt;br&gt;&lt;i&gt;large&lt;/i&gt;"| E4["minibatch-kmeans-assign"]
+
+    E1 --&gt;|k == 2| F1["bisecting-kmeans"]
+    E1 --&gt;|k &gt;= 3| F2["agglomerative-cut-k"]
+
+    E2 --&gt;|k == 2| G1["bisecting-kmeans"]
+    E2 --&gt;|"3 &lt;= k &lt;= 10"| G2["spectral-cosine"]
+    E2 --&gt;|k &gt; 10| G3["balanced-kmeans"]
+
+    F1 --&gt; H["Multi-Restart Loop &amp; Selection"]
+    F2 --&gt; H
+    G1 --&gt; H
+    G2 --&gt; H
+    G3 --&gt; H
+    E3 --&gt; H
+    E4 --&gt; H
+
+    H --&gt; I{"Any empty clusters?"}
+    I --&gt;|Yes| J["Auto-Repair: Bisect largest cluster"]
+    J --&gt; I
+    I --&gt;|No| K["Output exactly K groups"]</code></pre>
+<h3 id="algorithm-selection-matrix">Algorithm selection matrix<a class="headerlink" href="#algorithm-selection-matrix" title="Permanent link">&para;</a></h3>
+<p><code>_select_k_algorithm</code> (<code>k_algorithms/selection.py</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>k</th>
+<th>Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tiny</td>
+<td><code>k == 2</code></td>
+<td><code>bisecting-kmeans</code></td>
+</tr>
+<tr>
+<td>tiny</td>
+<td><code>k &gt;= 3</code></td>
+<td><code>agglomerative-cut-k</code></td>
+</tr>
+<tr>
+<td>small</td>
+<td><code>k == 2</code></td>
+<td><code>bisecting-kmeans</code></td>
+</tr>
+<tr>
+<td>small</td>
+<td><code>3 &lt;= k &lt;= 10</code></td>
+<td><code>spectral-cosine</code></td>
+</tr>
+<tr>
+<td>small</td>
+<td><code>k &gt; 10</code></td>
+<td><code>balanced-kmeans</code></td>
+</tr>
+<tr>
+<td>medium</td>
+<td>any</td>
+<td><code>balanced-kmeans</code></td>
+</tr>
+<tr>
+<td>large</td>
+<td>any</td>
+<td><code>minibatch-kmeans-assign</code></td>
+</tr>
+</tbody>
+</table>
+<p>Two more algorithm names appear at runtime: <code>constrained-kmeans</code> (spectral's
+fallback when the eigensolver fails) and <code>identical-embeddings-tiebreak</code> (all
+embeddings identical → deterministic round-robin).</p>
+<h3 id="the-algorithms-k_algorithms">The algorithms (<code>k_algorithms/</code>)<a class="headerlink" href="#the-algorithms-k_algorithms" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>agglomerative.py</code></strong> - <code>AgglomerativeClustering</code> with average linkage on
+  cosine distance, cut at <code>k</code>. Deterministic; no restarts.</li>
+<li><strong><code>bisecting.py</code></strong> - <code>BisectingKMeans</code> (largest-cluster strategy) wrapped in
+  multi-restart (5 restarts when <code>k==2</code>, else 3).</li>
+<li><strong><code>balanced.py</code></strong> - Lloyd KMeans wrapped in multi-restart (default 3).</li>
+<li><strong><code>spectral.py</code></strong> - <code>SpectralClustering</code> on a precomputed cosine-affinity
+  matrix (<code>(cos+1)/2</code>, clipped). Falls back to <code>constrained-kmeans</code> on
+  eigensolver failure and records the substitution in the trace.</li>
+<li><strong><code>minibatch_assign.py</code></strong> - single <code>MiniBatchKMeans</code> fit, then a final hard
+  cosine assignment of every row to its nearest centroid. Also exposes
+  <code>_assign_to_nearest_centroid</code> used by the oversized path.</li>
+<li><strong><code>degenerate.py</code></strong> - <code>_all_identical</code> detection and <code>_round_robin_labels</code>.</li>
+</ul>
+<h3 id="multi-restart-and-selection">Multi-restart and selection<a class="headerlink" href="#multi-restart-and-selection" title="Permanent link">&para;</a></h3>
+<p><code>k_algorithms/restart.py</code> runs <code>n_restarts</code> seeded trials and keeps the best
+by a sortable key: <strong>cosine silhouette (higher better) → Davies–Bouldin (lower
+better) → restart index (earlier wins ties)</strong>. The i-th restart uses
+<code>seed_i = (seed + i) mod 2³²</code>. <code>quality_profile.py</code> maps the <code>quality</code> preset and
+tier to the restart count (e.g. <code>balanced</code>+<code>small</code> → 5, <code>best</code>+<code>tiny</code> → 12).</p>
+<h3 id="empty-cluster-repair">Empty-cluster repair<a class="headerlink" href="#empty-cluster-repair" title="Permanent link">&para;</a></h3>
+<p><code>k_algorithms/repair.py</code> guarantees all <code>k</code> labels are populated. While any
+label in <code>[0, k-1]</code> is missing, it bisects the largest cluster and moves the
+smaller half into the missing label. It records <code>"empty-cluster-repaired"</code> once.</p>
+<h3 id="permutation-invariance">Permutation invariance<a class="headerlink" href="#permutation-invariance" title="Permanent link">&para;</a></h3>
+<p>Before dispatching, <code>_run_split</code> sorts rows by a lexicographic key
+(<code>np.lexsort</code>) and unsorts the labels afterward, so the output is invariant to
+input row order for a fixed seed.</p>
+<hr />
+<h2 id="13-keyword-and-topic-label-generation">13. Keyword and topic-label generation<a class="headerlink" href="#13-keyword-and-topic-label-generation" title="Permanent link">&para;</a></h2>
+<p><code>representation/keywords.py</code> is a <strong>pure post-processing layer</strong> - it never
+affects cluster assignments, parameters, or routing.</p>
+<h3 id="c-tf-idf-keywords">c-TF-IDF keywords<a class="headerlink" href="#c-tf-idf-keywords" title="Permanent link">&para;</a></h3>
+<p><code>extract_cluster_keywords</code> concatenates each cluster's texts into one
+"document", builds a count matrix with <code>CountVectorizer</code> (unigrams + bigrams,
+English stop words), and computes an enhanced class-based TF-IDF:</p>
+<ol>
+<li><strong>L1 Normalisation</strong>: Normalises Count-TF counts per class to make keyword representation document-length invariant.</li>
+<li><strong>BM25 Saturation</strong>: Applies a sublinear frequency scaling (BM25 term saturation with <span class="arithmatex">\(k1=1.5\)</span>) to prevent highly frequent terms in a single cluster from dominating the scores.</li>
+<li><strong>Corpus-Aware Stop Word Demotion</strong>: Identifies terms appearing uniformly across <span class="arithmatex">\(&gt;80\%\)</span> of clusters with low score variance (CV <span class="arithmatex">\(&lt;0.5\)</span>) and demotes their scores by <span class="arithmatex">\(0.1\times\)</span> to filter domain-specific noise (e.g. the word "ticket" in a customer support dataset).</li>
+</ol>
+<p>The formula:</p>
+<div class="arithmatex">\[score(word, cluster) = \frac{tf_{norm} \cdot (k1 + 1)}{tf_{norm} + k1} \cdot \log\left(1 + \frac{A}{tf_{global}}\right)\]</div>
+<p>where <span class="arithmatex">\(A\)</span> is the mean words-per-cluster and <span class="arithmatex">\(tf_{global}\)</span> is the word's total count across the entire corpus. The top-N words per cluster are returned with their scores.</p>
+<h3 id="topic-labels">Topic labels<a class="headerlink" href="#topic-labels" title="Permanent link">&para;</a></h3>
+<p><code>generate_topic_label</code> re-scores the top keywords for <em>label suitability</em> (a
+different goal than keyword ranking):</p>
+<ul>
+<li>Bigrams are preferred (usually clean noun phrases).</li>
+<li>Noun-suffix words (<code>-tion</code>, <code>-ity</code>, <code>-ware</code>, …) are boosted.</li>
+<li>Generic predicate verbs (<code>provides</code>, <code>ensures</code>, …) are rejected.</li>
+<li>Standalone adjectives are demoted.</li>
+</ul>
+<p>It then selects the top-2 non-overlapping candidates using an <strong>MMR-style Jaccard similarity check on character trigrams</strong> (demoting candidates with trigram Jaccard <span class="arithmatex">\(&gt;0.5\)</span> overlap to prevent near-synonym combinations like "security" and "secure"), and joins them, e.g. <code>"Cybersecurity &amp; Encryption"</code>. Everything is wrapped in <code>try/except</code> so a labelling failure never breaks clustering output.</p>
+<hr />
+<h2 id="14-the-fitted-state-persistence-and-prediction">14. The fitted state, persistence, and prediction<a class="headerlink" href="#14-the-fitted-state-persistence-and-prediction" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph LR
+    subgraph Offline ["Offline Training Phase"]
+        Train["Fit on Corpus"]
+        Save["save(path)"]
+    end
+
+    subgraph Serialization ["Lightweight Disk Format"]
+        Centroids["centroids.npy (np.float32)"]
+        Manifest["manifest.json (Config &amp; Thresholds)"]
+        Stats["stats.json (Cohesion stats)"]
+        Keywords["keywords.json (c-TF-IDF labels)"]
+    end
+
+    subgraph Online ["Online Inference Phase (Millisecond Scale)"]
+        Load["load(path)"]
+        Predict["predict(new_texts)"]
+        OOD{"Nearest Centroid &lt;br&gt;&amp; Outlier Threshold?"}
+        Assign["Assign Cluster ID"]
+        Outlier["Filter as Noise (-1)"]
+    end
+
+    Train --&gt; Save
+    Save --&gt; Centroids
+    Save --&gt; Manifest
+    Save --&gt; Stats
+    Save --&gt; Keywords
+
+    Centroids --&gt; Load
+    Manifest --&gt; Load
+    Stats --&gt; Load
+    Keywords --&gt; Load
+
+    Load --&gt; Predict
+    Predict --&gt; OOD
+    OOD --&gt;|Within Boundary| Assign
+    OOD --&gt;|Out of Boundary| Outlier</code></pre>
+<h3 id="fittedstate">FittedState<a class="headerlink" href="#fittedstate" title="Permanent link">&para;</a></h3>
+<p><code>persistence.py</code> defines <code>FittedState</code>, the compact snapshot built by
+<code>_build_fitted_state</code> at the end of <code>fit()</code>/<code>fit_predict()</code>:</p>
+<ul>
+<li>L2-normalised <code>centroids</code> and their <code>cluster_ids</code>.</li>
+<li><code>train_labels</code> aligned with the original input.</li>
+<li><code>embedding_dim</code>, <code>dim_band</code>, <code>mode</code> (<code>"density"</code> or <code>"fixed_k"</code>), <code>n_clusters</code>.</li>
+<li><strong>Calibration (Schema v3)</strong>: </li>
+<li><code>auto_outlier_threshold</code> (fallback global scalar)</li>
+<li><code>cluster_cohesion</code> (rich <code>ClusterStats</code> per cluster: <code>min_sim</code>, <code>mean_sim</code>, <code>median_sim</code>, <code>std_sim</code>, <code>p10_sim</code>, <code>p25_sim</code>, <code>radius_95</code>)</li>
+<li><code>max_inter_centroid_sim</code></li>
+<li><code>inter_centroid_sims</code> (full <span class="arithmatex">\(K \times K\)</span> inter-centroid similarity matrix).</li>
+<li><code>keywords</code> and <code>topic_labels</code>.</li>
+<li><code>config_snapshot</code> (public fields only) and <code>library_version</code>.</li>
+<li>Optional <code>reducer</code> (a fitted PCA) - only when reduction was used.</li>
+</ul>
+<h3 id="save-format-manifest-schema-v3">Save format (manifest schema v3)<a class="headerlink" href="#save-format-manifest-schema-v3" title="Permanent link">&para;</a></h3>
+<p><code>save_state</code> writes a directory: <code>manifest.json</code> (written last, signalling
+consistency), <code>centroids.npy</code>, <code>inter_centroid_sims.npy</code>, <code>labels.npy</code>, <code>keywords.json</code>, <code>stats.json</code>, and
+optionally <code>reducer.pkl</code>. The manifest embeds the <code>class_name</code> to prevent
+loading a <code>SemanticKSplit</code> model into <code>SemanticClusterer</code> by mistake.</p>
+<p><code>load_state</code> reads schemas v1, v2, and v3. Legacy models load cleanly, filling missing schema v3 calibration fields with safe defaults.</p>
+<p>The embedding model is <strong>never</strong> serialised - by design.</p>
+<h3 id="prediction">Prediction<a class="headerlink" href="#prediction" title="Permanent link">&para;</a></h3>
+<p><code>predict()</code> embeds new texts, applies the saved reducer if present, normalises,
+and calls <code>assign_to_centroids</code> to compute a cosine dot product against the stored centroids. 
+- <strong>Vectorized OOD Assignment</strong>: Replaces Python loops with fully vectorized numpy operations, checking cosine similarities against per-cluster adaptive thresholds in <span class="arithmatex">\(O(N)\)</span> time.
+- <strong>Margin-Based Disambiguation</strong>: When the top-2 cluster similarities are within a margin of <span class="arithmatex">\(0.03\)</span>, the classifier resolves the tiebreaker by prioritizing the cluster with higher density or semantic keyword overlap.</p>
+<hr />
+<h2 id="15-out-of-distribution-calibration">15. Out-of-distribution calibration<a class="headerlink" href="#15-out-of-distribution-calibration" title="Permanent link">&para;</a></h2>
+<p>Calibration computes two levels of OOD safety nets during training:</p>
+<h3 id="a-global-outlier-threshold">A. Global Outlier Threshold<a class="headerlink" href="#a-global-outlier-threshold" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Pool all member-to-centroid similarities.</li>
+<li>Take the <strong>5th percentile</strong> (<code>global_p5</code>) - 95% of genuine training members clear it.</li>
+<li>Compute <code>max_inter</code> = the highest pairwise centroid similarity (overlap).</li>
+<li>Combine:
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>auto_threshold = max(0.05, global_p5 · 0.90 − 0.05 · max(0, max_inter))
+</span></code></pre></div></li>
+</ol>
+<h3 id="b-per-cluster-adaptive-thresholds-default-auto-mode">B. Per-Cluster Adaptive Thresholds (Default <code>"auto"</code> Mode)<a class="headerlink" href="#b-per-cluster-adaptive-thresholds-default-auto-mode" title="Permanent link">&para;</a></h3>
+<p>A custom boundary is calculated for each cluster <span class="arithmatex">\(c\)</span>:
+1. <strong>Size-Aware Percentile Floor</strong>:
+   - Clusters with size <span class="arithmatex">\(\ge 50\)</span> use the cluster's <code>p10_sim</code>.
+   - Clusters with size <span class="arithmatex">\(\le 10\)</span> use <code>p25_sim</code> (strict, conservative boundary).
+   - In between, the percentile floor is linearly blended between <code>p25</code> and <code>p10</code>.
+2. <strong>Tightness Bonus</strong>: If a cluster is highly cohesive, its threshold is tightened:
+   $<span class="arithmatex">\(bonus = \max(0, (mean\_sim_c - 0.5)) \cdot 0.1\)</span>$
+3. <strong>Neighbor Confusion Relaxation</strong>: If a cluster centroid has neighbors with similarity <span class="arithmatex">\(&gt;0.7\)</span>, the boundary is relaxed slightly:
+   $<span class="arithmatex">\(relaxation = 0.03 \cdot n\_confused\_neighbors\)</span>$
+4. <strong>Dynamic Pullback Factor &amp; Small-Data Safety Valve</strong>:
+   - On standard corpora: <span class="arithmatex">\(\text{pullback} = 0.70 + 0.15 \cdot \min(1.0, \frac{\text{size}_c}{50})\)</span>
+   - <strong>Small-Data Regime (<span class="arithmatex">\(N_{\text{train}} &lt; 200\)</span> or <span class="arithmatex">\(\max(\text{size}) &lt; 30\)</span>):</strong> Centroids from sparse training points overfit and create artificially tight similarity distributions. To avoid over-rejecting valid test data, pullback reduces to <span class="arithmatex">\(0.45 + 0.10 \cdot \min(1.0, \frac{\text{size}_c}{50})\)</span>, the tightness bonus is capped at <span class="arithmatex">\(0.02\)</span>, and <span class="arithmatex">\(\text{threshold}_c\)</span> is bounded above by the global <code>auto_outlier_threshold</code>.
+5. Combined:
+   $<span class="arithmatex">\(threshold_c = \max(0.05, base\_floor \cdot pullback - relaxation + bonus - 0.02 \cdot max\_inter)\)</span>$</p>
+<p>This prevents tight, high-density clusters from incorrectly absorbing loose queries, stops loose clusters from dropping valid queries, and ensures robust generalization even on small training datasets.</p>
+<hr />
+<h2 id="16-determinism-model">16. Determinism model<a class="headerlink" href="#16-determinism-model" title="Permanent link">&para;</a></h2>
+<p>The library targets reproducibility within a fixed environment ("Determinism
+Scope"): same library version, Python minor, OS family, and major.minor of
+<code>numpy</code>/<code>scikit-learn</code>/<code>hdbscan</code>/<code>umap-learn</code>, plus the same <code>random_state</code>.</p>
+<p>Mechanisms:</p>
+<ul>
+<li><strong>Seed validation</strong> - <code>random_state</code> must be an int in <code>[0, 2³²−1]</code>; booleans
+  rejected. The constructor kwarg wins over a config value on conflict.</li>
+<li><strong>Seeded RNGs</strong> - profiling, subsampling, and KMeans-family algorithms take
+  explicit seeds. Multi-restart uses <code>(seed + i) mod 2³²</code>.</li>
+<li><strong>The HDBSCAN global-RNG guard</strong> - HDBSCAN reads numpy's <em>global</em> RNG.
+  <code>_seeded_global_numpy(seed)</code> (<code>optional_deps.py</code>) saves the global state, seeds
+  it, runs HDBSCAN, and restores the prior state in a <code>finally</code> block. Only
+  HDBSCAN is permitted inside that context; anything else touching the global
+  RNG would break the guarantee.</li>
+<li><strong>Permutation invariance</strong> - <code>SemanticKSplit</code> sorts rows before clustering and
+  unsorts after.</li>
+</ul>
+<p>"Permutation-equivalent" output means the <em>grouping</em> is stable; integer cluster
+ids may be relabelled between runs. For stable ids, <code>fit</code> + <code>save</code>/<code>load</code> rather
+than re-clustering.</p>
+<hr />
+<h2 id="17-quality-floors-and-confidence">17. Quality floors and confidence<a class="headerlink" href="#17-quality-floors-and-confidence" title="Permanent link">&para;</a></h2>
+<p><code>_quality_floor.py</code> enforces soft quality gates after clustering. Per-tier floors
+load from <code>tests/fixtures/release_ready/baseline_scores.json</code> at import (falling
+back to 0.30 with a warning if absent).</p>
+<p><code>_enforce_quality_floor</code> raises a <code>UserWarning</code> and lowers
+<code>report.confidence_level</code> to <code>"low"</code> (tagging <code>report.warnings</code>) when either:</p>
+<ol>
+<li>The noise ratio exceeds 0.85 (<code>"high-noise-ratio"</code>), or</li>
+<li>The dataset is clusterable (<code>cluster_tendency &gt;= 0.40</code>) yet the score is below
+   the tier floor (<code>"no-cluster-met-quality-floor"</code>).</li>
+</ol>
+<p>These never fail the run - they annotate it so callers can react. The large tier
+adds <code>"large-low-shard-quality"</code> when more than 30% of shards score poorly.</p>
+<hr />
+<h2 id="18-oversized-datasets">18. Oversized datasets<a class="headerlink" href="#18-oversized-datasets" title="Permanent link">&para;</a></h2>
+<p>When unique <code>N</code> exceeds <code>max_samples</code> (default 200,000):</p>
+<ul>
+<li>With the <strong>default cap</strong>, <code>SemanticClusterer</code> raises <code>ValueError</code>. (The
+  deprecated <code>allow_oversized_datasets=True</code> rewrites the cap to <code>None</code>.)</li>
+<li>With <strong><code>max_samples=None</code></strong> (or a custom cap), the library takes the
+  <strong>subsample-then-assign</strong> path: deterministically subsample to the limit,
+  cluster the subsample with the large pipeline, build per-cluster centroids,
+  then assign out-of-sample rows in chunks by nearest centroid. A
+  <code>"oversized-subsampled"</code> warning is recorded.</li>
+</ul>
+<p><code>SemanticKSplit</code> has the parallel <code>_oversized_subsample_and_assign_k</code>
+(<code>k_algorithms/oversized.py</code>): subsample → <code>minibatch-kmeans-assign</code> → repair
+empty clusters → centroid build → nearest-centroid assignment for the rest. The
+gating error/warning strings are shared module-level constants so wording is
+byte-identical between the two classes.</p>
+<hr />
+<h2 id="19-module-map">19. Module map<a class="headerlink" href="#19-module-map" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>semantic_clusterer/
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── __init__.py            Lazy public exports (PEP 562 __getattr__)
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── config.py              _BaseConfig, SemanticClustererConfig,
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│                          SemanticKSplitConfig, ClustererConfig (alias);
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│                          tier routing + reduction policy live here
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>├── core.py                SemanticClusterer: orchestration, fit/predict/
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│                          save/load, oversized handling, fitted-state build
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>├── k_split.py             SemanticKSplit: fixed-k orchestration + lifecycle
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>├── dim_bands.py           Band ranges, resolve_dim_band, BandGrid
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>├── report.py              ClusteringReport, _PipelineTrace, JSON coercion
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>├── persistence.py         FittedState, ClusterStats, save/load,
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│                          assign_to_centroids
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>├── _quality_floor.py      Soft quality gates + confidence downgrade
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>├── optional_deps.py       try_import_umap, _seeded_global_numpy (RNG guard)
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>├── embedding/
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│   ├── adapters.py        normalize_embedding_model, validate_embeddings
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>│   ├── base.py            BaseEmbedder protocol
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>│   └── onnx_model.py      Built-in MiniLM-L6-v2 ONNX embedder
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>│
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>├── preprocessing/
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>│   └── clean.py           TextPreprocessor (clean + dedupe + index map)
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>│
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>├── profile via pipeline/profile.py
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>├── pipeline/
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>│   ├── profile.py         compute_dataset_profile + DatasetProfile
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>│   ├── tiny.py            Tiny tier (agglomerative + candidate scoring)
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>│   ├── small.py           Small tier (UMAP + HDBSCAN sweep)
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>│   ├── medium.py          Medium tier (profiled sweep)
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>│   ├── large.py           Large tier (shard → cluster → stitch)
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>│   ├── quality.py         score_clustering, compute_cluster_stats,
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>│   │                      should_trigger_refinement
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>│   ├── tuning.py          get_band_grid + all adaptive parameter helpers
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>│   ├── granularity.py     GranularityProfile table + apply_mcs_floor
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>│   ├── postprocess.py     noise recovery, splitting, merging, compaction
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>│   └── utils.py           small shared helpers
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>│
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>├── k_algorithms/
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>│   ├── selection.py       (tier, k) → algorithm matrix
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>│   ├── agglomerative.py   agglomerative-cut-k
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>│   ├── bisecting.py       bisecting-kmeans
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>│   ├── balanced.py        balanced-kmeans
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>│   ├── spectral.py        spectral-cosine (+ constrained-kmeans fallback)
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>│   ├── minibatch_assign.py minibatch-kmeans-assign + nearest-centroid
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>│   ├── degenerate.py      identical-embeddings handling
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>│   ├── repair.py          empty-cluster repair
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>│   ├── restart.py         multi-restart selection
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>│   ├── oversized.py       fixed-k subsample-then-assign
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>│   └── quality_profile.py quality preset → restart count
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>│
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>├── reduction/
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>│   ├── base.py            BaseReducer protocol + get_reducer factory
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>│   ├── pca.py             PCAReducer (sklearn PCA wrapper)
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>│   └── umap_utils.py      UMAP neighbour/component heuristics
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>│
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>├── representation/
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>│   └── keywords.py        c-TF-IDF keywords + topic-label generation
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>│
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a>├── output/
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>│   └── formatter.py       simple/detailed formatting, keyword enrichment
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>│
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a>├── clustering/
+</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>│   └── centroid_fallback.py  Nearest-centroid noise rescue (large tier)
+</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a>│
+</span><span id="__span-1-65"><a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a>└── utils/
+</span><span id="__span-1-66"><a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a>    ├── similarity.py      normalize_vectors, cosine helpers
+</span><span id="__span-1-67"><a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a>    ├── helpers.py         centroid, representative, confidence, indices
+</span><span id="__span-1-68"><a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a>    └── progress.py        PipelineProgress phase tracker
+</span></code></pre></div>
+<hr />
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../"><code>index.md</code></a> - overview and API surface.</li>
+<li><a href="../user_guide/"><code>user_guide.md</code></a> - task-oriented usage guide.</li>
+<li><a href="../changelog/"><code>changelog.md</code></a>, version history.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 semantic_clusterer contributor
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Baishnab1708/semantic_clusterer" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/semantic_clusterer/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

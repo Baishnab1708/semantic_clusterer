@@ -1,0 +1,3134 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A production-ready Python library for unsupervised semantic text clustering at scale. Ships with a built-in ONNX embedder, an adaptive multi-tier pipeline, and two focused public classes.">
+      
+      
+        <meta name="author" content="semantic_clusterer contributor">
+      
+      
+        <link rel="canonical" href="https://Baishnab1708.github.io/semantic_clusterer/user_guide/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../working/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>User Guide - Semantic Clusterer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#semantic_clusterer-user-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Semantic Clusterer" class="md-header__button md-logo" aria-label="Semantic Clusterer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Semantic Clusterer
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              User Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Baishnab1708/semantic_clusterer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    semantic_clusterer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  User Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../working/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  How It Works
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Semantic Clusterer" class="md-nav__button md-logo" aria-label="Semantic Clusterer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Semantic Clusterer
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Baishnab1708/semantic_clusterer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    semantic_clusterer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-mental-model-pick-your-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Mental model - pick your class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-install-and-first-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Install and first run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-level-1-beginner-one-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Level 1 - Beginner: one line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-level-2-detailed-output-labels-keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Level 2 - Detailed output, labels, keywords
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Level 2 - Detailed output, labels, keywords">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detailed-clusters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed clusters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#row-aligned-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Row-aligned labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turning-keywords-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turning keywords off
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-level-3-fixed-k-with-semanticksplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Level 3 - Fixed-K with SemanticKSplit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-level-4-custom-embedders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Level 4 - Custom embedders
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Level 4 - Custom embedders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sentencetransformers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SentenceTransformers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-plain-callable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A plain callable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#langchain-azure-openai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LangChain / Azure OpenAI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-library-expects-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the library expects back
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-level-5-the-two-tuning-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Level 5 - The two tuning knobs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Level 5 - The two tuning knobs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cluster_granularity-for-semanticclusterer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cluster_granularity - for SemanticClusterer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quality-for-semanticksplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        quality - for SemanticKSplit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-level-6-production-lifecycle-fit-predict-save-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Level 6 - Production lifecycle: fit / predict / save / load
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Level 6 - Production lifecycle: fit / predict / save / load">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-four-step-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four-step lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-fit-computes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What fit() computes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predict-assigning-new-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predict() - assigning new text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-gets-saved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What gets saved
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-embedding-model-is-never-saved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The embedding model is never saved
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#same-lifecycle-for-semanticksplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same lifecycle for SemanticKSplit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-level-7-out-of-distribution-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Level 7 - Out-of-distribution detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Level 7 - Out-of-distribution detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-is-calibrated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it is calibrated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-it-in-predict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using it in predict()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#margin-based-disambiguation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Margin-Based Disambiguation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vectorized-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vectorized Performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-cohesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting cohesion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-level-8-run-reports-and-introspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Level 8 - Run reports and introspection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Level 8 - Run reports and introspection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-report-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The report fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-serialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON serialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intrinsic-metrics-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intrinsic metrics glossary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-level-9-configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Level 9 - Configuration reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Level 9 - Configuration reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passing-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passing config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#semanticclustererconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SemanticClustererConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#semanticksplitconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SemanticKSplitConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-clustererconfig-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The ClustererConfig alias
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-level-10-power-user-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Level 10 - Power-user controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Level 10 - Power-user controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pinning-hdbscan-parameters-semanticclusterer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pinning HDBSCAN parameters (SemanticClusterer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removing-the-dataset-cap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing the dataset cap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-ood-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tuning OOD sensitivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-the-chosen-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting the chosen parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-working-with-dataframes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Working with DataFrames
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-determinism-and-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Determinism and reproducibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-performance-and-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Performance and scaling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Performance and scaling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-routing-by-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier routing by size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-error-handling-and-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Error handling and edge cases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-troubleshooting-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Troubleshooting / FAQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-migration-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Migration notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. Migration notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategy-and-reduction-are-no-longer-public" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        strategy and reduction are no longer public
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../working/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-mental-model-pick-your-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Mental model - pick your class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-install-and-first-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Install and first run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-level-1-beginner-one-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Level 1 - Beginner: one line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-level-2-detailed-output-labels-keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Level 2 - Detailed output, labels, keywords
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Level 2 - Detailed output, labels, keywords">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detailed-clusters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detailed clusters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#row-aligned-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Row-aligned labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turning-keywords-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turning keywords off
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-level-3-fixed-k-with-semanticksplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Level 3 - Fixed-K with SemanticKSplit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-level-4-custom-embedders" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Level 4 - Custom embedders
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Level 4 - Custom embedders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sentencetransformers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SentenceTransformers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-plain-callable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A plain callable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#langchain-azure-openai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LangChain / Azure OpenAI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-library-expects-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the library expects back
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-level-5-the-two-tuning-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Level 5 - The two tuning knobs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Level 5 - The two tuning knobs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cluster_granularity-for-semanticclusterer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cluster_granularity - for SemanticClusterer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quality-for-semanticksplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        quality - for SemanticKSplit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-level-6-production-lifecycle-fit-predict-save-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Level 6 - Production lifecycle: fit / predict / save / load
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Level 6 - Production lifecycle: fit / predict / save / load">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-four-step-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four-step lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-fit-computes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What fit() computes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predict-assigning-new-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predict() - assigning new text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-gets-saved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What gets saved
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-embedding-model-is-never-saved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The embedding model is never saved
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#same-lifecycle-for-semanticksplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same lifecycle for SemanticKSplit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-level-7-out-of-distribution-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Level 7 - Out-of-distribution detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Level 7 - Out-of-distribution detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-is-calibrated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it is calibrated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-it-in-predict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using it in predict()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#margin-based-disambiguation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Margin-Based Disambiguation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vectorized-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vectorized Performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-cohesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting cohesion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-level-8-run-reports-and-introspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Level 8 - Run reports and introspection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Level 8 - Run reports and introspection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-report-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The report fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json-serialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JSON serialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intrinsic-metrics-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intrinsic metrics glossary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-level-9-configuration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Level 9 - Configuration reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Level 9 - Configuration reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passing-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passing config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#semanticclustererconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SemanticClustererConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#semanticksplitconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SemanticKSplitConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-clustererconfig-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The ClustererConfig alias
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-level-10-power-user-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Level 10 - Power-user controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Level 10 - Power-user controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pinning-hdbscan-parameters-semanticclusterer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pinning HDBSCAN parameters (SemanticClusterer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removing-the-dataset-cap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing the dataset cap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-ood-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tuning OOD sensitivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-the-chosen-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting the chosen parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-working-with-dataframes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Working with DataFrames
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-determinism-and-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Determinism and reproducibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-performance-and-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Performance and scaling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. Performance and scaling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-routing-by-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier routing by size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical tips
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-error-handling-and-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Error handling and edge cases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-troubleshooting-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Troubleshooting / FAQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-migration-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Migration notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. Migration notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strategy-and-reduction-are-no-longer-public" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        strategy and reduction are no longer public
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="semantic_clusterer-user-guide">semantic_clusterer - User Guide<a class="headerlink" href="#semantic_clusterer-user-guide" title="Permanent link">&para;</a></h1>
+<p>A practical, task-oriented guide to <code>semantic_clusterer</code>. It starts with the
+absolute basics and builds up to production deployment and power-user tuning.
+Every snippet is runnable as-is.</p>
+<p>If you want to understand <em>how the engine works internally</em> (pipeline tiers,
+scoring, determinism), read <a href="../working/"><code>working.md</code></a>. This guide is about
+<em>what to do</em>; <code>working.md</code> is about <em>why it does it</em>.</p>
+<hr />
+<h2 id="1-mental-model-pick-your-class">1. Mental model - pick your class<a class="headerlink" href="#1-mental-model-pick-your-class" title="Permanent link">&para;</a></h2>
+<p>The library exposes exactly two entry-point classes. Picking the right one is
+the only decision you have to make up front.</p>
+<table>
+<thead>
+<tr>
+<th>You want…</th>
+<th>Use</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The data to decide how many groups exist</td>
+<td><code>SemanticClusterer</code></td>
+<td>A variable number of clusters; some items may be flagged as noise (<code>-1</code>)</td>
+</tr>
+<tr>
+<td>Exactly <code>k</code> groups, no matter what</td>
+<td><code>SemanticKSplit</code></td>
+<td>Exactly <code>k</code> non-empty groups; every valid item gets a group</td>
+</tr>
+</tbody>
+</table>
+<p>Rules of thumb:</p>
+<ul>
+<li><strong>Don't know the number of topics?</strong> Use <code>SemanticClusterer</code>. It finds the
+  natural structure and can mark outliers as noise.</li>
+<li><strong>Need to fill <code>k</code> buckets</strong> (e.g. "split these 10,000 tickets across 8
+  reviewers")? Use <code>SemanticKSplit</code>. It guarantees <code>k</code> non-empty partitions.</li>
+</ul>
+<p>Both classes:</p>
+<ul>
+<li>Accept the same kinds of embedding models (or use the built-in one).</li>
+<li>Share the same <code>fit / predict / save / load</code> production lifecycle.</li>
+<li>Produce the same output formats (<code>simple</code>, <code>detailed</code>, row-aligned labels).</li>
+<li>Are deterministic for a fixed <code>random_state</code>.</li>
+</ul>
+<hr />
+<h2 id="2-install-and-first-run">2. Install and first run<a class="headerlink" href="#2-install-and-first-run" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>semantic_clusterer
+</span></code></pre></div>
+<p>Requirements:</p>
+<ul>
+<li>Python 3.9 or newer.</li>
+<li><code>hdbscan</code> and <code>umap-learn</code> are installed automatically as hard dependencies.</li>
+</ul>
+<p>The first time you cluster <em>without</em> supplying your own embedder, the library
+downloads the built-in ONNX MiniLM-L6-v2 model (~90 MB) into
+<code>~/.cache/semantic_clusterer/</code>. Every later run uses that local cache, so it is
+a one-time cost. The download is checksum-verified and retried once on
+corruption.</p>
+<p>Verify your install:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">semantic_clusterer</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">semantic_clusterer</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h2 id="3-level-1-beginner-one-line">3. Level 1 - Beginner: one line<a class="headerlink" href="#3-level-1-beginner-one-line" title="Permanent link">&para;</a></h2>
+<p>The zero-config path. No model, no parameters, just text in and groups out.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticClusterer</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="s2">"How do I reset my password?"</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="s2">"I forgot my login password"</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="s2">"What are your business hours?"</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="s2">"When do you open on weekdays?"</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="s2">"My package hasn't arrived"</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="s2">"Where is my order?"</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">]</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">clusterer</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">()</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="n">groups</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">groups</span><span class="p">):</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cluster </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   - </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>groups</code> is a <code>List[List[str]]</code> - each inner list is one cluster, holding the
+original (unmodified) input strings. Items the algorithm considers noise are
+simply omitted from the <code>simple</code> output.</p>
+<p>That's the entire beginner experience. Everything below is opt-in.</p>
+<hr />
+<h2 id="4-level-2-detailed-output-labels-keywords">4. Level 2 - Detailed output, labels, keywords<a class="headerlink" href="#4-level-2-detailed-output-labels-keywords" title="Permanent link">&para;</a></h2>
+<h3 id="detailed-clusters">Detailed clusters<a class="headerlink" href="#detailed-clusters" title="Permanent link">&para;</a></h3>
+<p>Pass <code>return_format="detailed"</code> to get rich metadata per cluster instead of
+plain lists.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">clusters</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">()</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">return_format</span><span class="o">=</span><span class="s2">"detailed"</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"cluster_id"</span><span class="p">])</span>      <span class="c1"># 0, 1, 2, ...</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"topic_label"</span><span class="p">])</span>     <span class="c1"># e.g. "Reset Password &amp; Login Account"</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"keywords"</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span>    <span class="c1"># top c-TF-IDF keywords</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"representative"</span><span class="p">])</span>  <span class="c1"># the item closest to the cluster centroid</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"size"</span><span class="p">])</span>            <span class="c1"># number of items</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"confidence"</span><span class="p">])</span>      <span class="c1"># mean cosine similarity to centroid (0..1)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"items"</span><span class="p">])</span>           <span class="c1"># the original texts in this cluster</span>
+</span></code></pre></div>
+<p>Each detailed cluster is a dictionary with these keys:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cluster_id</code></td>
+<td><code>int</code></td>
+<td>Stable cluster identifier (0-based)</td>
+</tr>
+<tr>
+<td><code>representative</code></td>
+<td><code>str</code></td>
+<td>The single item nearest the cluster centroid</td>
+</tr>
+<tr>
+<td><code>items</code></td>
+<td><code>List[str]</code></td>
+<td>All original texts assigned to this cluster</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td><code>int</code></td>
+<td><code>len(items)</code></td>
+</tr>
+<tr>
+<td><code>confidence</code></td>
+<td><code>float</code></td>
+<td>Mean cosine similarity of members to the centroid. A <strong>cohesion</strong> measure, not a probability - values near 1.0 mean a tight, coherent cluster</td>
+</tr>
+<tr>
+<td><code>keywords</code></td>
+<td><code>List[str]</code></td>
+<td>Top keywords from class-based TF-IDF (c-TF-IDF)</td>
+</tr>
+<tr>
+<td><code>topic_label</code></td>
+<td><code>str</code></td>
+<td>A short human-readable label derived from the keywords</td>
+</tr>
+</tbody>
+</table>
+<h3 id="row-aligned-labels">Row-aligned labels<a class="headerlink" href="#row-aligned-labels" title="Permanent link">&para;</a></h3>
+<p>When you need one label per input row (for joining back to a table), use
+<code>cluster_labels()</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">()</span><span class="o">.</span><span class="n">cluster_labels</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># numpy int32 array, shape (len(texts),)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1">#   0, 1, 2, ... → cluster id</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1">#  -1            → filtered (empty / None / NaN) or noise</span>
+</span></code></pre></div>
+<p>The i-th label corresponds to the i-th input text. Duplicates get the same
+label as the first occurrence; missing/empty inputs get <code>-1</code>.</p>
+<h3 id="turning-keywords-off">Turning keywords off<a class="headerlink" href="#turning-keywords-off" title="Permanent link">&para;</a></h3>
+<p>Keyword and topic-label generation is a pure post-processing step that never
+affects cluster assignments. Disable it to save a little time:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticClustererConfig</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">SemanticClustererConfig</span><span class="p">(</span><span class="n">extract_keywords</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</span></code></pre></div>
+<hr />
+<h2 id="5-level-3-fixed-k-with-semanticksplit">5. Level 3 - Fixed-K with SemanticKSplit<a class="headerlink" href="#5-level-3-fixed-k-with-semanticksplit" title="Permanent link">&para;</a></h2>
+<p>When you need a guaranteed number of groups:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticKSplit</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">ks</span> <span class="o">=</span> <span class="n">SemanticKSplit</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>          <span class="c1"># k is a required keyword argument, &gt;= 2</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">groups</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>          <span class="c1"># always exactly 3 non-empty groups</span>
+</span></code></pre></div>
+<p><code>k</code> is <strong>required</strong> and must be an integer <code>&gt;= 2</code>. The constraint
+<code>2 &lt;= k &lt;= number of unique texts</code> is checked at run time. If <code>k</code> equals the
+number of unique inputs, you get a warning (each cluster will have a single
+member).</p>
+<p><code>SemanticKSplit</code> mirrors <code>SemanticClusterer</code>'s methods:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">groups</span>   <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>                          <span class="c1"># List[List[str]], length k</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">groups</span>   <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">return_format</span><span class="o">=</span><span class="s2">"detailed"</span><span class="p">)</span><span class="c1"># rich dicts</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">labels</span>   <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">split_labels</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>                   <span class="c1"># row-aligned int32 array</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">labels</span><span class="p">,</span> <span class="n">report</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">split_with_report</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>        <span class="c1"># labels + ClusteringReport</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">vectors</span>  <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>                           <span class="c1"># embeddings only</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">clusters</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>                         <span class="c1"># alias for split()</span>
+</span></code></pre></div>
+<p>Key differences from <code>SemanticClusterer</code>:</p>
+<ul>
+<li>It never returns fewer than <code>k</code> groups. If the algorithm leaves a cluster
+  empty, an automatic repair step bisects the largest cluster until all <code>k</code>
+  labels are populated.</li>
+<li>Valid inputs never receive <code>-1</code> from <code>split()</code>/<code>split_labels()</code> - only
+  filtered rows (empty/None/NaN) do.</li>
+<li>It does not import <code>hdbscan</code> at all; it uses partition algorithms (k-means
+  family, spectral, agglomerative) chosen by tier and <code>k</code>.</li>
+</ul>
+<hr />
+<h2 id="6-level-4-custom-embedders">6. Level 4 - Custom embedders<a class="headerlink" href="#6-level-4-custom-embedders" title="Permanent link">&para;</a></h2>
+<p>The built-in ONNX MiniLM-L6-v2 is convenient but small. To use a stronger or
+domain-specific model, pass any object that exposes one of these methods - the
+library auto-detects the interface.</p>
+<blockquote>
+<p>[!NOTE]
+For details on how dimension bands resolve your custom embedder's output size to select the appropriate UMAP and HDBSCAN search space, see <a href="../working/#6-dimension-bands">How It Works: Dimension bands</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Typical source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.embed(texts) -&gt; np.ndarray</code></td>
+<td>Custom embedder (preferred)</td>
+</tr>
+<tr>
+<td><code>.encode(texts, **kwargs) -&gt; np.ndarray</code></td>
+<td>SentenceTransformers / HuggingFace</td>
+</tr>
+<tr>
+<td><code>.embed_documents(texts) -&gt; list</code></td>
+<td>LangChain embeddings</td>
+</tr>
+<tr>
+<td><code>__call__(texts) -&gt; np.ndarray</code></td>
+<td>A plain callable / lambda</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sentencetransformers">SentenceTransformers<a class="headerlink" href="#sentencetransformers" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticClusterer</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s2">"all-mpnet-base-v2"</span><span class="p">)</span>   <span class="c1"># 768-dim</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="n">groups</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="a-plain-callable">A plain callable<a class="headerlink" href="#a-plain-callable" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_embedder</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="c1"># must return a 2D array of shape (len(texts), dim)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="k">return</span> <span class="n">my_api</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">=</span><span class="n">my_embedder</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Callables are automatically chunked in <code>batch_size</code> blocks to protect remote
+APIs from oversized payloads.</p>
+<h3 id="langchain-azure-openai">LangChain / Azure OpenAI<a class="headerlink" href="#langchain-azure-openai" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">AzureOpenAIEmbeddings</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticClusterer</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">embedder</span> <span class="o">=</span> <span class="n">AzureOpenAIEmbeddings</span><span class="p">(</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">azure_deployment</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"AZURE_OPENAI_EMBEDDING_DEPLOYMENT"</span><span class="p">],</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"AZURE_OPENAI_ENDPOINT"</span><span class="p">],</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"AZURE_OPENAI_API_KEY"</span><span class="p">],</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"AZURE_OPENAI_API_VERSION"</span><span class="p">],</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="p">)</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">embedding_model</span><span class="o">=</span><span class="n">embedder</span><span class="p">)</span>
+</span></code></pre></div>
+<p>You do <strong>not</strong> need to retune anything when you change models. The library
+detects the embedding dimension and selects a matching internal parameter grid
+(see "dimension bands" in <a href="../working/"><code>working.md</code></a>). A 384-dim model and a
+3072-dim model both work out of the box.</p>
+<h3 id="what-the-library-expects-back">What the library expects back<a class="headerlink" href="#what-the-library-expects-back" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A 2D numeric array shaped <code>(n_texts, embedding_dim)</code>.</li>
+<li>No <code>NaN</code> or <code>Inf</code> values (these raise a <code>ValueError</code>).</li>
+<li>For a single text, return shape <code>(1, dim)</code>, not <code>(dim,)</code>.</li>
+</ul>
+<p>Embeddings are validated and cast to <code>float32</code> internally. If
+<code>normalize_embeddings=True</code> (the default), custom-model outputs are
+L2-normalised before clustering. The built-in ONNX embedder already normalises
+its own output.</p>
+<hr />
+<h2 id="7-level-5-the-two-tuning-knobs">7. Level 5 - The two tuning knobs<a class="headerlink" href="#7-level-5-the-two-tuning-knobs" title="Permanent link">&para;</a></h2>
+<p>You almost never need to tune this library. There is exactly <strong>one</strong> primary
+knob per class, and both default to <code>"balanced"</code>.</p>
+<blockquote>
+<p>[!NOTE]
+For details on how these knobs affect internal search space scoring and parameters, see <a href="../working/#10-granularity-system">How It Works: Granularity system</a> and <a href="../working/#12-semanticksplit-internals">How It Works: Quality profile</a>.</p>
+</blockquote>
+<h3 id="cluster_granularity-for-semanticclusterer"><code>cluster_granularity</code> - for <code>SemanticClusterer</code><a class="headerlink" href="#cluster_granularity-for-semanticclusterer" title="Permanent link">&para;</a></h3>
+<p>Controls how many clusters you get and how aggressively near-identical clusters
+are merged.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Result</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"fine"</code></td>
+<td>Most clusters, many sub-topics</td>
+<td>Topic discovery, exploration</td>
+</tr>
+<tr>
+<td><code>"balanced"</code> (default)</td>
+<td>Moderate, clean clusters</td>
+<td>General use</td>
+</tr>
+<tr>
+<td><code>"coarse"</code></td>
+<td>Fewest, broadest clusters</td>
+<td>High-level grouping</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">cluster_granularity</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">)</span>   <span class="c1"># default</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">cluster_granularity</span><span class="o">=</span><span class="s2">"coarse"</span><span class="p">)</span>     <span class="c1"># fewer, bigger</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">cluster_granularity</span><span class="o">=</span><span class="s2">"fine"</span><span class="p">)</span>       <span class="c1"># more, smaller</span>
+</span></code></pre></div>
+<p>Under the hood, <code>granularity</code>:</p>
+<ul>
+<li>Raises the minimum cluster size floor (coarser → higher floor).</li>
+<li>Runs a centroid-merge pass after clustering (coarser → lower merge
+  threshold, so more clusters merge).</li>
+<li>Adds a fragmentation penalty to the internal parameter search.</li>
+</ul>
+<h3 id="quality-for-semanticksplit"><code>quality</code> - for <code>SemanticKSplit</code><a class="headerlink" href="#quality-for-semanticksplit" title="Permanent link">&para;</a></h3>
+<p>Controls how many independent restarts run before the best partition is
+selected.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Restarts (small tier)</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"fast"</code></td>
+<td>1</td>
+<td>Quick iteration</td>
+</tr>
+<tr>
+<td><code>"balanced"</code> (default)</td>
+<td>5</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><code>"best"</code></td>
+<td>10</td>
+<td>Quality is critical</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">SemanticKSplit</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">)</span>   <span class="c1"># default</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">SemanticKSplit</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="s2">"best"</span><span class="p">)</span>       <span class="c1"># most thorough</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">SemanticKSplit</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="s2">"fast"</span><span class="p">)</span>       <span class="c1"># single pass</span>
+</span></code></pre></div>
+<p>Restart counts scale down for larger tiers (medium/large) because each restart
+is more expensive there. Deterministic algorithms (e.g. agglomerative in the
+tiny tier) ignore the restart count, since running them repeatedly gives the same
+answer, so it would be wasted work.</p>
+<blockquote>
+<p><strong>Pipeline tier and dimensionality reduction are not knobs.</strong> They are chosen
+automatically from dataset size and embedding dimension. This is deliberate:
+it keeps the API tiny and the results consistent. See
+<a href="../working/"><code>working.md</code></a> for the routing details.</p>
+</blockquote>
+<hr />
+<h2 id="8-level-6-production-lifecycle-fit-predict-save-load">8. Level 6 - Production lifecycle: fit / predict / save / load<a class="headerlink" href="#8-level-6-production-lifecycle-fit-predict-save-load" title="Permanent link">&para;</a></h2>
+<p>The one-shot <code>cluster()</code> / <code>split()</code> methods re-run the whole pipeline every
+call. For production you usually want to <strong>train once</strong> and then <strong>serve
+predictions</strong> cheaply - possibly in a different process or on a different
+machine. That is what <code>fit / predict / save / load</code> is for.</p>
+<blockquote>
+<p>[!NOTE]
+For details on the model manifest schema, folder structure, and prediction algorithms, see <a href="../working/#14-the-fitted-state-persistence-and-prediction">How It Works: Fitted state persistence</a>.</p>
+</blockquote>
+<h3 id="the-four-step-lifecycle">The four-step lifecycle<a class="headerlink" href="#the-four-step-lifecycle" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticClusterer</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># 1. Train once (offline) -----------------------------------------------</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">cluster_granularity</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">)</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>                       <span class="c1"># discovers clusters, computes centroids</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># 2. Inspect what it learned --------------------------------------------</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">)</span>                  <span class="c1"># True</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">outlier_threshold</span><span class="p">)</span>          <span class="c1"># auto-calibrated OOD floor, e.g. 0.34</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">get_topic_labels</span><span class="p">())</span>         <span class="c1"># {0: "Reset Password", 1: "Shipping", ...}</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1"># 3. Persist to disk ----------------------------------------------------</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="n">sc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"./model"</span><span class="p">)</span>                   <span class="c1"># a directory of small, inspectable files</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="c1"># 4. Serve (separate process / deployment) ------------------------------</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="n">loaded</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"./model"</span><span class="p">)</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">loaded</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">)</span>   <span class="c1"># assigns each text to a trained cluster</span>
+</span></code></pre></div>
+<h3 id="what-fit-computes">What <code>fit()</code> computes<a class="headerlink" href="#what-fit-computes" title="Permanent link">&para;</a></h3>
+<p><code>fit()</code> runs the full clustering pipeline and then builds a compact "fitted
+state":</p>
+<ul>
+<li><strong>L2-normalised centroids</strong> - one per discovered cluster.</li>
+<li><strong>Per-cluster cohesion stats</strong> - min / mean / 10th-percentile member
+  similarity to the centroid.</li>
+<li><strong>An auto-calibrated <code>outlier_threshold</code></strong> (see <a href="#9-level-7-out-of-distribution-detection">section 9</a>).</li>
+<li><strong>Keywords and topic labels</strong> per cluster (unless disabled).</li>
+<li><strong>A snapshot of the public config</strong> for faithful save/load round-trips.</li>
+</ul>
+<p><code>fit()</code> returns <code>self</code>, so you can chain: <code>sc = SemanticClusterer().fit(corpus)</code>.</p>
+<p><code>fit_predict(texts)</code> does the same work and returns the training labels in one
+call, without a second embedding pass.</p>
+<h3 id="predict-assigning-new-text"><code>predict()</code> - assigning new text<a class="headerlink" href="#predict-assigning-new-text" title="Permanent link">&para;</a></h3>
+<p><code>predict()</code> embeds new texts, normalises them, and assigns each to the nearest
+trained centroid by cosine similarity:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">loaded</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">)</span>                       <span class="c1"># OOD → -1 (auto)</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">loaded</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># never -1 for OOD</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">loaded</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>   <span class="c1"># explicit floor</span>
+</span></code></pre></div>
+<p><code>predict()</code> does <strong>not</strong> re-cluster. It is a fast nearest-centroid assignment,
+so it scales to large prediction batches.</p>
+<h3 id="what-gets-saved">What gets saved<a class="headerlink" href="#what-gets-saved" title="Permanent link">&para;</a></h3>
+<p><code>save(path)</code> writes a directory:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>model/
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>  manifest.json    schema version, embedding dim, dim_band, mode,
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>                   config snapshot, auto outlier threshold, class name
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>  centroids.npy    float32 (K, D), L2-normalised cluster centroids
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>  labels.npy       int32 (N_train,), training labels
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>  keywords.json    c-TF-IDF keywords + topic labels per cluster
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>  stats.json       per-cluster cohesion statistics
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>  reducer.pkl      OPTIONAL, only when a fitted PCA was part of the model
+</span></code></pre></div>
+<p>The files are deliberately small and human-inspectable. The manifest is
+written last, so its presence signals a complete, consistent directory.</p>
+<h3 id="the-embedding-model-is-never-saved">The embedding model is never saved<a class="headerlink" href="#the-embedding-model-is-never-saved" title="Permanent link">&para;</a></h3>
+<p>This is intentional, as it avoids arbitrary Python and locking the saved
+model to one embedder version. When you <code>load()</code>, re-inject the same embedder
+you trained with:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">loaded</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"./model"</span><span class="p">,</span> <span class="n">embedding_model</span><span class="o">=</span><span class="n">my_embedder</span><span class="p">)</span>
+</span></code></pre></div>
+<p>If you trained with the built-in ONNX embedder, you can omit
+<code>embedding_model</code> and it will be used again automatically.</p>
+<blockquote>
+<p><strong>Important:</strong> Always predict with the <em>same</em> embedding model you trained
+with. Centroids live in that model's vector space; a different model produces
+incompatible vectors and meaningless assignments.</p>
+</blockquote>
+<h3 id="same-lifecycle-for-semanticksplit">Same lifecycle for SemanticKSplit<a class="headerlink" href="#same-lifecycle-for-semanticksplit" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">ks</span> <span class="o">=</span> <span class="n">SemanticKSplit</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">)</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">ks</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">ks</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"./ksplit_model"</span><span class="p">)</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">loaded_ks</span> <span class="o">=</span> <span class="n">SemanticKSplit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"./ksplit_model"</span><span class="p">)</span>   <span class="c1"># k is restored from manifest</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">loaded_ks</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>SemanticKSplit.load()</code> reads <code>k</code> back from the saved manifest, so you don't
+re-specify it.</p>
+<hr />
+<h2 id="9-level-7-out-of-distribution-detection">9. Level 7 - Out-of-distribution detection<a class="headerlink" href="#9-level-7-out-of-distribution-detection" title="Permanent link">&para;</a></h2>
+<p>A common production need: "what happens when I predict on text that doesn't
+belong to any trained cluster?" The library handles this with an
+<strong>auto-calibrated outlier threshold</strong> and <strong>per-cluster adaptive boundaries</strong>.</p>
+<blockquote>
+<p>[!NOTE]
+For the mathematical formulas, threshold scaling factors, and boundary calculations, see <a href="../working/#15-out-of-distribution-calibration">How It Works: Out-of-distribution calibration</a>.</p>
+</blockquote>
+<h3 id="how-it-is-calibrated">How it is calibrated<a class="headerlink" href="#how-it-is-calibrated" title="Permanent link">&para;</a></h3>
+<p>During <code>fit()</code>, the library measures how similar every training member is to
+its own cluster centroid. It records detailed statistics (<code>min_sim</code>, <code>mean_sim</code>, 
+<code>median_sim</code>, <code>std_sim</code>, <code>p10_sim</code>, <code>p25_sim</code>, and <code>radius_95</code>) and pools all member similarities.</p>
+<ol>
+<li><strong>Global Threshold</strong>: The <strong>5th percentile</strong> of the global pool, pulled back slightly and relaxed when centroids overlap. This is used by <code>"global"</code> mode.</li>
+<li><strong>Adaptive Thresholds</strong>: Per-cluster thresholds computed dynamically using:</li>
+<li><strong>Size-aware percentile floor</strong>: Large clusters (<span class="arithmatex">\(&gt;50\)</span>) use <code>p10</code>, small clusters (<span class="arithmatex">\(&lt;10\)</span>) use <code>p25</code> to prevent false assignments.</li>
+<li><strong>Tightness bonus</strong>: Highly cohesive clusters (high <code>mean_sim</code>) receive a tighter threshold.</li>
+<li><strong>Confusion relaxation</strong>: Centroids that are close to neighbors (similarity <span class="arithmatex">\(&gt;0.7\)</span>) have their thresholds relaxed.</li>
+<li><strong>Small-data safety valve</strong>: When trained on small corpora (<span class="arithmatex">\(N &lt; 200\)</span> or max cluster <span class="arithmatex">\(&lt;30\)</span>), the pullback factor is dynamically relaxed and thresholds are capped at the global 5th-percentile baseline to prevent centroid overfitting on few training samples from rejecting valid test queries.</li>
+</ol>
+<p>This per-cluster adaptive calculation runs automatically during <code>.fit()</code> and is stored in the model manifest (Schema v3).</p>
+<h3 id="using-it-in-predict">Using it in predict()<a class="headerlink" href="#using-it-in-predict" title="Permanent link">&para;</a></h3>
+<p><code>predict()</code> accepts an <code>outlier_threshold</code> argument with the following modes:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">)</span>                           <span class="c1"># "auto" (default, adaptive per-cluster)</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="o">=</span><span class="s2">"global"</span><span class="p">)</span> <span class="c1"># unified global threshold</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>    <span class="c1"># disable OOD entirely (forced assignment)</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>     <span class="c1"># explicit float floor</span>
+</span></code></pre></div>
+<ul>
+<li><strong><code>"auto"</code> / <code>"adaptive"</code></strong> <em>(default)</em>: Uses size-aware, tightness-aware, and overlap-aware per-cluster thresholds. </li>
+<li><strong><code>"global"</code></strong>: Uses a single unified global outlier threshold.</li>
+<li><strong><code>None</code></strong>: every text is assigned to its nearest cluster, no matter how far.</li>
+<li><strong>a <code>float</code></strong>: your own cosine-similarity floor; overrides the auto values.</li>
+</ul>
+<h3 id="margin-based-disambiguation">Margin-Based Disambiguation<a class="headerlink" href="#margin-based-disambiguation" title="Permanent link">&para;</a></h3>
+<p>When predicting, if a text falls near the decision boundary between two clusters (i.e. the difference between the top-2 cosine similarities is <span class="arithmatex">\(&lt;0.03\)</span>), the system resolves the tiebreaker using cluster density and cohesion stats (or token matching if keywords are present).</p>
+<h3 id="vectorized-performance">Vectorized Performance<a class="headerlink" href="#vectorized-performance" title="Permanent link">&para;</a></h3>
+<p>outlier assignment and adaptive filtering are fully vectorized in NumPy, making <code>.predict()</code> extremely fast even with thousands of clusters and batch predictions.</p>
+<h3 id="inspecting-cohesion">Inspecting cohesion<a class="headerlink" href="#inspecting-cohesion" title="Permanent link">&para;</a></h3>
+<p><code>cluster_stats</code> exposes the per-cluster cohesion measured at fit time:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sc</span><span class="o">.</span><span class="n">cluster_stats</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="nb">print</span><span class="p">(</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>        <span class="sa">f</span><span class="s2">"Topic </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">'cluster_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">: size=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">'size'</span><span class="p">]</span><span class="si">}</span><span class="s2">, "</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>        <span class="sa">f</span><span class="s2">"mean=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">'mean_sim'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, median=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">'median_sim'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, "</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>        <span class="sa">f</span><span class="s2">"std=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">'std_sim'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, radius_95=</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="s1">'radius_95'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<ul>
+<li>Low <code>mean_sim</code> / high <code>std_sim</code> / high <code>radius_95</code> <span class="arithmatex">\(\rightarrow\)</span> a loose cluster.</li>
+<li>High <code>mean_sim</code> / low <code>std_sim</code> / low <code>radius_95</code> <span class="arithmatex">\(\rightarrow\)</span> a tight, well-separated group.</li>
+</ul>
+<h3 id="fine-tuning">Fine-tuning<a class="headerlink" href="#fine-tuning" title="Permanent link">&para;</a></h3>
+<p>If <code>"auto"</code> is too aggressive or too lenient for your domain, set the threshold manually or scale the global value:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># more permissive (fewer items flagged as OOD)</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_texts</span><span class="p">,</span> <span class="n">outlier_threshold</span><span class="o">=</span><span class="n">sc</span><span class="o">.</span><span class="n">outlier_threshold</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The auto value works best when the texts you predict on come from the same
+domain you trained on. If you train on support tickets and predict on news
+headlines, set the threshold manually.</p>
+<blockquote>
+<p>Models loaded from an older schema (v1 or v2) degrade gracefully. They will load v3 fields with safe default fallbacks.</p>
+</blockquote>
+<hr />
+<h2 id="10-level-8-run-reports-and-introspection">10. Level 8 - Run reports and introspection<a class="headerlink" href="#10-level-8-run-reports-and-introspection" title="Permanent link">&para;</a></h2>
+<p>For observability, such as logging, dashboards, and debugging, use the <code>*_with_report</code>
+methods. They return both the labels and a structured <code>ClusteringReport</code>.</p>
+<blockquote>
+<p>[!NOTE]
+For details on how the scoring metrics (coverage, cohesion, separation) are computed and weighted, see <a href="../working/#9-the-scoring-objective">How It Works: The scoring objective</a>.</p>
+</blockquote>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">labels</span><span class="p">,</span> <span class="n">report</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">()</span><span class="o">.</span><span class="n">cluster_with_report</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">n_input_texts</span><span class="p">)</span>     <span class="c1"># 6</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">)</span>        <span class="c1"># 3</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">n_noise</span><span class="p">)</span>           <span class="c1"># items labelled -1</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">pipeline_tier</span><span class="p">)</span>     <span class="c1"># "tiny" | "small" | "medium" | "large"</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">dim_band</span><span class="p">)</span>          <span class="c1"># "low" | "mid" | "high" | "xhigh"</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">embedding_dim</span><span class="p">)</span>     <span class="c1"># e.g. 384</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">chosen_params</span><span class="p">)</span>     <span class="c1"># the actual parameters the pipeline picked</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">intrinsic_metrics</span><span class="p">)</span> <span class="c1"># score, coverage, cohesion, separation, ...</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">phase_timings</span><span class="p">)</span>     <span class="c1"># seconds spent in each phase</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">warnings</span><span class="p">)</span>          <span class="c1"># any soft warnings raised during the run</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">confidence_level</span><span class="p">)</span>  <span class="c1"># "high" or "low"</span>
+</span></code></pre></div>
+<h3 id="the-report-fields">The report fields<a class="headerlink" href="#the-report-fields" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_input_texts</code></td>
+<td>Number of input rows</td>
+</tr>
+<tr>
+<td><code>n_clustered</code></td>
+<td>Rows assigned to a real cluster</td>
+</tr>
+<tr>
+<td><code>n_noise</code></td>
+<td>Rows labelled <code>-1</code> (noise or filtered)</td>
+</tr>
+<tr>
+<td><code>n_clusters</code></td>
+<td>Number of clusters found (for KSplit, equals <code>k</code>)</td>
+</tr>
+<tr>
+<td><code>pipeline_tier</code></td>
+<td>Which tier ran: tiny / small / medium / large</td>
+</tr>
+<tr>
+<td><code>embedding_dim</code></td>
+<td>Embedding dimensionality</td>
+</tr>
+<tr>
+<td><code>dim_band</code></td>
+<td>Resolved dimension band</td>
+</tr>
+<tr>
+<td><code>dataset_profile</code></td>
+<td>Statistical profile of the data (medium/large)</td>
+</tr>
+<tr>
+<td><code>chosen_params</code></td>
+<td>Concrete parameters selected by the search</td>
+</tr>
+<tr>
+<td><code>intrinsic_metrics</code></td>
+<td>Quality metrics (see below)</td>
+</tr>
+<tr>
+<td><code>phase_timings</code></td>
+<td>Wall-clock seconds per pipeline phase</td>
+</tr>
+<tr>
+<td><code>warnings</code></td>
+<td>Soft warnings (e.g. <code>"high-noise-ratio"</code>)</td>
+</tr>
+<tr>
+<td><code>confidence_level</code></td>
+<td><code>"high"</code> normally, <code>"low"</code> when a quality check fired</td>
+</tr>
+<tr>
+<td><code>random_state</code></td>
+<td>The seed used</td>
+</tr>
+<tr>
+<td><code>library_version</code></td>
+<td>The <code>semantic_clusterer</code> version</td>
+</tr>
+</tbody>
+</table>
+<h3 id="json-serialisation">JSON serialisation<a class="headerlink" href="#json-serialisation" title="Permanent link">&para;</a></h3>
+<p>The report is JSON-safe via <code>to_dict()</code> - <code>NaN</code>/<code>Inf</code> become <code>null</code>, numpy
+types become native Python types:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="n">labels</span><span class="p">,</span> <span class="n">report</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">()</span><span class="o">.</span><span class="n">cluster_with_report</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>     <span class="c1"># never raises</span>
+</span></code></pre></div>
+<h3 id="intrinsic-metrics-glossary">Intrinsic metrics glossary<a class="headerlink" href="#intrinsic-metrics-glossary" title="Permanent link">&para;</a></h3>
+<p><code>intrinsic_metrics</code> (and <code>score_clustering</code>) report:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Range</th>
+<th>Higher is…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>score</code></td>
+<td>0..1</td>
+<td>Better, the composite objective</td>
+</tr>
+<tr>
+<td><code>coverage</code></td>
+<td>0..1</td>
+<td>Better, the fraction of points clustered (<code>1 - noise_ratio</code>)</td>
+</tr>
+<tr>
+<td><code>cohesion</code></td>
+<td>0..1</td>
+<td>Better, the average within-cluster similarity</td>
+</tr>
+<tr>
+<td><code>separation</code></td>
+<td>0..1</td>
+<td>Better, the average distance between cluster centroids</td>
+</tr>
+<tr>
+<td><code>stability</code></td>
+<td>0..1</td>
+<td>Better, the size balance across clusters</td>
+</tr>
+<tr>
+<td><code>density</code></td>
+<td>0..1</td>
+<td>Better, the HDBSCAN validity (when available)</td>
+</tr>
+<tr>
+<td><code>largest_ratio</code></td>
+<td>0..1</td>
+<td>Lower, the size of the biggest cluster as a fraction of N</td>
+</tr>
+<tr>
+<td><code>fragmentation</code></td>
+<td>0..1</td>
+<td>Lower, the fraction of micro-clusters</td>
+</tr>
+<tr>
+<td><code>noise_ratio</code></td>
+<td>0..1</td>
+<td>Lower, the fraction of unclustered points</td>
+</tr>
+<tr>
+<td><code>n_clusters</code></td>
+<td>int</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p><code>SemanticKSplit</code> reports also include <code>silhouette</code>, <code>davies_bouldin</code>,
+<code>per_cluster_size</code>, and <code>per_cluster_cohesion</code>, plus a <code>chosen_params</code>
+<code>algorithm_used</code> field naming the exact algorithm that ran.</p>
+<hr />
+<h2 id="11-level-9-configuration-reference">11. Level 9 - Configuration reference<a class="headerlink" href="#11-level-9-configuration-reference" title="Permanent link">&para;</a></h2>
+<p>You can configure either class with a typed config object or a plain dict.</p>
+<h3 id="passing-config">Passing config<a class="headerlink" href="#passing-config" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticClusterer</span><span class="p">,</span> <span class="n">SemanticClustererConfig</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1"># Typed config object</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">SemanticClustererConfig</span><span class="p">(</span><span class="n">cluster_granularity</span><span class="o">=</span><span class="s2">"coarse"</span><span class="p">))</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="c1"># Plain dict (validated - unknown keys raise ValueError)</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">"cluster_granularity"</span><span class="p">:</span> <span class="s2">"coarse"</span><span class="p">,</span> <span class="s2">"batch_size"</span><span class="p">:</span> <span class="mi">128</span><span class="p">})</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="c1"># Some knobs are also direct constructor kwargs</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">cluster_granularity</span><span class="o">=</span><span class="s2">"coarse"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="semanticclustererconfig"><code>SemanticClustererConfig</code><a class="headerlink" href="#semanticclustererconfig" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cluster_granularity</code></td>
+<td><code>"fine"\|"balanced"\|"coarse"</code></td>
+<td><code>"balanced"</code></td>
+<td>Primary knob for cluster count vs. merging</td>
+</tr>
+<tr>
+<td><code>min_cluster_size</code></td>
+<td><code>int &gt;= 2</code> or <code>None</code></td>
+<td><code>None</code></td>
+<td>Power-user HDBSCAN override; <code>None</code> = auto</td>
+</tr>
+<tr>
+<td><code>min_samples</code></td>
+<td><code>int &gt;= 1</code> or <code>None</code></td>
+<td><code>None</code></td>
+<td>Power-user HDBSCAN override; <code>None</code> = auto</td>
+</tr>
+<tr>
+<td><code>extract_keywords</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Generate c-TF-IDF keywords + topic labels</td>
+</tr>
+<tr>
+<td><code>keywords_top_n</code></td>
+<td><code>int &gt;= 1</code></td>
+<td><code>10</code></td>
+<td>Keywords per cluster</td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td><code>int &gt; 0</code></td>
+<td><code>64</code></td>
+<td>Embedding batch size</td>
+</tr>
+<tr>
+<td><code>normalize_embeddings</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>L2-normalise custom-model output</td>
+</tr>
+<tr>
+<td><code>random_state</code></td>
+<td><code>int</code> in <code>[0, 2³²-1]</code></td>
+<td><code>42</code></td>
+<td>Seed for all randomness</td>
+</tr>
+<tr>
+<td><code>max_samples</code></td>
+<td><code>int &gt;= 1</code> or <code>None</code></td>
+<td><code>200_000</code></td>
+<td>Hard cap; <code>None</code> disables it</td>
+</tr>
+<tr>
+<td><code>verbose</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td>Print phase-by-phase progress</td>
+</tr>
+</tbody>
+</table>
+<h3 id="semanticksplitconfig"><code>SemanticKSplitConfig</code><a class="headerlink" href="#semanticksplitconfig" title="Permanent link">&para;</a></h3>
+<p>Same infrastructure fields as above, with one different primary knob and no
+<code>min_cluster_size</code> / <code>min_samples</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quality</code></td>
+<td><code>"fast"\|"balanced"\|"best"</code></td>
+<td><code>"balanced"</code></td>
+<td>Primary knob for restart count</td>
+</tr>
+<tr>
+<td><code>extract_keywords</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Keywords + topic labels</td>
+</tr>
+<tr>
+<td><code>keywords_top_n</code></td>
+<td><code>int &gt;= 1</code></td>
+<td><code>10</code></td>
+<td>Keywords per cluster</td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td><code>int &gt; 0</code></td>
+<td><code>64</code></td>
+<td>Embedding batch size</td>
+</tr>
+<tr>
+<td><code>normalize_embeddings</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>L2-normalise custom-model output</td>
+</tr>
+<tr>
+<td><code>random_state</code></td>
+<td><code>int</code> in <code>[0, 2³²-1]</code></td>
+<td><code>42</code></td>
+<td>Seed</td>
+</tr>
+<tr>
+<td><code>max_samples</code></td>
+<td><code>int &gt;= 1</code> or <code>None</code></td>
+<td><code>200_000</code></td>
+<td>Hard cap; <code>None</code> disables</td>
+</tr>
+<tr>
+<td><code>verbose</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td>Progress output</td>
+</tr>
+</tbody>
+</table>
+<h3 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Out-of-range or wrong-type values raise <code>ValueError</code> at construction.</li>
+<li>Unknown dict keys raise <code>ValueError</code> naming the allowed fields.</li>
+<li>Tier routing and dimensionality reduction are <strong>internal</strong> - passing
+  <code>strategy=</code> or <code>reduction=</code> is rejected as an unknown field.</li>
+</ul>
+<h3 id="the-clustererconfig-alias">The <code>ClustererConfig</code> alias<a class="headerlink" href="#the-clustererconfig-alias" title="Permanent link">&para;</a></h3>
+<p><code>ClustererConfig</code> is a backward-compatible alias kept for older code. New code
+should prefer <code>SemanticClustererConfig</code>. It carries the same public fields plus
+a deprecated <code>allow_oversized_datasets</code> flag (use <code>max_samples</code> instead).</p>
+<hr />
+<h2 id="12-level-10-power-user-controls">12. Level 10 - Power-user controls<a class="headerlink" href="#12-level-10-power-user-controls" title="Permanent link">&para;</a></h2>
+<p>These are escape hatches. The defaults are good; reach for these only when you
+have a specific reason.</p>
+<h3 id="pinning-hdbscan-parameters-semanticclusterer">Pinning HDBSCAN parameters (SemanticClusterer)<a class="headerlink" href="#pinning-hdbscan-parameters-semanticclusterer" title="Permanent link">&para;</a></h3>
+<p>By default the small/medium pipelines search a grid of <code>min_cluster_size</code> and
+<code>min_samples</code> values. To force exact values and make the run fully
+predictable:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">SemanticClustererConfig</span><span class="p">(</span><span class="n">min_cluster_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></code></pre></div>
+<p>When set, these override the entire search grid (the granularity floor is still
+respected for <code>min_cluster_size</code>).</p>
+<ul>
+<li><code>min_cluster_size</code> - the smallest group HDBSCAN will call a cluster. Larger
+  → fewer, bigger clusters. Must be <code>&gt;= 2</code>.</li>
+<li><code>min_samples</code> - how conservative the density estimate is. Larger → more
+  points treated as noise. Must be <code>&gt;= 1</code>.</li>
+</ul>
+<h3 id="removing-the-dataset-cap">Removing the dataset cap<a class="headerlink" href="#removing-the-dataset-cap" title="Permanent link">&para;</a></h3>
+<p>By default <code>N &gt; 200_000</code> raises <code>ValueError</code> to protect you from accidental
+huge runs. To allow it, set <code>max_samples</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">SemanticClustererConfig</span><span class="p">(</span><span class="n">max_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>       <span class="c1"># no cap, uses subsample-then-assign</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">SemanticClustererConfig</span><span class="p">(</span><span class="n">max_samples</span><span class="o">=</span><span class="mi">500_000</span><span class="p">)</span>    <span class="c1"># custom cap</span>
+</span></code></pre></div>
+<p>When the cap is exceeded with <code>max_samples=None</code>, the library subsamples to the
+limit, clusters the subsample, then assigns the rest by nearest centroid, and
+records an <code>"oversized-subsampled"</code> warning in the report.</p>
+<h3 id="tuning-ood-sensitivity">Tuning OOD sensitivity<a class="headerlink" href="#tuning-ood-sensitivity" title="Permanent link">&para;</a></h3>
+<p>Covered in <a href="#9-level-7-out-of-distribution-detection">section 9</a>: pass a float
+to <code>predict(outlier_threshold=...)</code>, or scale <code>sc.outlier_threshold</code>.</p>
+<h3 id="inspecting-the-chosen-parameters">Inspecting the chosen parameters<a class="headerlink" href="#inspecting-the-chosen-parameters" title="Permanent link">&para;</a></h3>
+<p><code>chosen_params</code> in the report tells you exactly what ran, which is the best
+starting point before manual tuning:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">_</span><span class="p">,</span> <span class="n">report</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">cluster_with_report</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">chosen_params</span><span class="p">)</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="c1"># {'pipeline_tier': 'small', 'dim_band': 'low', 'umap_n_neighbors': 25,</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="c1">#  'hdbscan_min_cluster_size': 18, 'hdbscan_method': 'eom', ...}</span>
+</span></code></pre></div>
+<hr />
+<h2 id="13-working-with-dataframes">13. Working with DataFrames<a class="headerlink" href="#13-working-with-dataframes" title="Permanent link">&para;</a></h2>
+<p><code>cluster_labels()</code> (and <code>split_labels()</code>) return a row-aligned array, which
+makes pandas integration a one-liner.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">semantic_clusterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticClusterer</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"text"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"..."</span><span class="p">,</span> <span class="s2">"..."</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"..."</span><span class="p">]})</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">()</span>
+</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="n">df</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">cluster_labels</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</span><span id="__span-27-8"><a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>
+</span><span id="__span-27-9"><a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="c1"># -1 marks rows that were empty/None/NaN or classified as noise</span>
+</span><span id="__span-27-10"><a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="n">clustered</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-27-11"><a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="n">noise</span>     <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Notes:</p>
+<ul>
+<li>Missing values (<code>None</code>/<code>NaN</code>) are safe - they map to <code>-1</code>, never crash.</li>
+<li>Duplicate texts get the same label as their first occurrence.</li>
+<li>The output length always equals the input length, so the column aligns.</li>
+</ul>
+<p>For a production table you'd typically <code>fit()</code> once, <code>save()</code>, then <code>predict()</code>
+on new rows:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">df_new</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span> <span class="o">=</span> <span class="n">loaded</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df_new</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</span></code></pre></div>
+<hr />
+<h2 id="14-determinism-and-reproducibility">14. Determinism and reproducibility<a class="headerlink" href="#14-determinism-and-reproducibility" title="Permanent link">&para;</a></h2>
+<p>Two runs produce permutation-equivalent labels when they share all of:</p>
+<ul>
+<li>The same <code>semantic_clusterer</code> version.</li>
+<li>The same Python minor version.</li>
+<li>The same OS family.</li>
+<li>The same major.minor of <code>numpy</code>, <code>scikit-learn</code>, <code>hdbscan</code>, <code>umap-learn</code>.</li>
+<li>The same <code>random_state</code>.</li>
+</ul>
+<p>Pin the seed on the constructor:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">sc</span> <span class="o">=</span> <span class="n">SemanticClusterer</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">ks</span> <span class="o">=</span> <span class="n">SemanticKSplit</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</span></code></pre></div>
+<p>"Permutation-equivalent" means the grouping is identical, though the integer
+cluster <em>ids</em> may be a relabelling (cluster 0 in one run might be cluster 2 in
+another). If you need stable ids across runs, <code>fit()</code> once and <code>save()</code>/<code>load()</code>
+the model rather than re-clustering.</p>
+<p><code>random_state</code> must be an integer in <code>[0, 2³² − 1]</code>. Booleans are rejected. When
+both a constructor <code>random_state</code> kwarg and a <code>config.random_state</code> are
+supplied, the constructor kwarg wins.</p>
+<hr />
+<h2 id="15-performance-and-scaling">15. Performance and scaling<a class="headerlink" href="#15-performance-and-scaling" title="Permanent link">&para;</a></h2>
+<h3 id="tier-routing-by-size">Tier routing by size<a class="headerlink" href="#tier-routing-by-size" title="Permanent link">&para;</a></h3>
+<p>The library automatically routes by the number of <em>unique</em> texts:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Unique N</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tiny</td>
+<td>1 – 150</td>
+<td>Exact agglomerative search</td>
+</tr>
+<tr>
+<td>small</td>
+<td>151 – 5 000</td>
+<td>UMAP + HDBSCAN parameter sweep</td>
+</tr>
+<tr>
+<td>medium</td>
+<td>5 001 – 50 000</td>
+<td>Profiled, bounded sweep</td>
+</tr>
+<tr>
+<td>large</td>
+<td>50 001 – 200 000</td>
+<td>Coarse k-means shards → per-shard HDBSCAN</td>
+</tr>
+</tbody>
+</table>
+<p>You don't choose the tier; it is derived from your data.</p>
+<h3 id="practical-tips">Practical tips<a class="headerlink" href="#practical-tips" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Deduplicate cost is free.</strong> Texts are deduplicated before embedding, so
+  repeated strings only get embedded once.</li>
+<li><strong><code>batch_size</code></strong> controls the embedding batch. Raise it for throughput on a
+  GPU-backed model; lower it if a remote API rejects large payloads.</li>
+<li><strong><code>fit</code> once, <code>predict</code> many.</strong> <code>predict()</code> is a cheap nearest-centroid pass;
+  prefer it over re-running <code>cluster()</code> for streaming/online workloads.</li>
+<li><strong><code>extract_keywords=False</code></strong> shaves the c-TF-IDF post-processing if you only
+  need labels.</li>
+<li><strong><code>verbose=True</code></strong> prints per-phase timings so you can see where time goes;
+  the same data is in <code>report.phase_timings</code>.</li>
+</ul>
+<h3 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h3>
+<p>The pipeline avoids building full <code>N×N</code> distance matrices on the larger tiers.
+The large tier shards the data and clusters each shard independently, then
+stitches near-duplicate clusters across shard boundaries, keeping peak memory
+bounded.</p>
+<blockquote>
+<p>[!WARNING]
+<strong>Large pipeline status:</strong> The <code>large</code> tier (N &gt; 50 000) has been upgraded
+to use multi-reduction PCA search and granularity post-processing, but <strong>has not
+yet been benchmarked or tested</strong> in v0.1.0 releases. Tiny, small, and medium
+tiers are fully verified and benchmarked.</p>
+</blockquote>
+<hr />
+<h2 id="16-error-handling-and-edge-cases">16. Error handling and edge cases<a class="headerlink" href="#16-error-handling-and-edge-cases" title="Permanent link">&para;</a></h2>
+<p>The library is designed to degrade gracefully rather than crash.</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty input list</td>
+<td>Returns <code>[]</code> (or empty array) - no error</td>
+</tr>
+<tr>
+<td>Single text</td>
+<td>Returns one cluster with that text</td>
+</tr>
+<tr>
+<td>All texts identical</td>
+<td>One cluster (clusterer) / round-robin split (KSplit)</td>
+</tr>
+<tr>
+<td><code>None</code> / <code>NaN</code> / empty rows</td>
+<td>Labelled <code>-1</code>, never crash</td>
+</tr>
+<tr>
+<td>Duplicate texts</td>
+<td>Embedded once; share the first occurrence's label</td>
+</tr>
+<tr>
+<td>Non-string element (e.g. a dict)</td>
+<td><code>TypeError</code> with a clear message</td>
+</tr>
+<tr>
+<td><code>NaN</code>/<code>Inf</code> in embeddings</td>
+<td><code>ValueError</code> from validation</td>
+</tr>
+<tr>
+<td><code>k &lt; 2</code> (KSplit)</td>
+<td><code>ValueError</code></td>
+</tr>
+<tr>
+<td><code>k &gt; unique texts</code> (KSplit)</td>
+<td><code>ValueError</code></td>
+</tr>
+<tr>
+<td><code>N &gt; max_samples</code></td>
+<td><code>ValueError</code> (default), or subsample with <code>max_samples=None</code></td>
+</tr>
+<tr>
+<td><code>umap-learn</code> import fails</td>
+<td>Small/medium fall back to PCA-only + <code>UserWarning</code></td>
+</tr>
+<tr>
+<td><code>hdbscan</code> missing</td>
+<td><code>SemanticClusterer.__init__</code> raises <code>ImportError</code></td>
+</tr>
+<tr>
+<td><code>predict()</code> before <code>fit()</code>/<code>load()</code></td>
+<td><code>RuntimeError</code></td>
+</tr>
+</tbody>
+</table>
+<p>When a soft quality issue is detected (very high noise, score below the tier
+floor), the run still succeeds but <code>report.confidence_level</code> becomes <code>"low"</code>
+and a tag is added to <code>report.warnings</code>.</p>
+<hr />
+<h2 id="17-troubleshooting-faq">17. Troubleshooting / FAQ<a class="headerlink" href="#17-troubleshooting-faq" title="Permanent link">&para;</a></h2>
+<p><strong>Too many tiny clusters.</strong>
+Use <code>cluster_granularity="coarse"</code>, or raise <code>min_cluster_size</code>. Coarse also
+runs a stronger merge pass.</p>
+<p><strong>Everything collapsed into one giant cluster.</strong>
+Try <code>cluster_granularity="fine"</code>, lower <code>min_cluster_size</code>, or check whether
+your embedder is producing meaningful vectors (clustering is only as good as
+the embeddings).</p>
+<p><strong>Lots of items end up as noise (<code>-1</code>).</strong>
+That's <code>SemanticClusterer</code> saying "these don't fit any dense region." If you
+need every item placed, use <code>SemanticKSplit</code> instead, or lower
+<code>min_cluster_size</code>. For <code>predict()</code>, pass <code>outlier_threshold=None</code>.</p>
+<p><strong><code>predict()</code> puts everything in <code>-1</code>.</strong>
+The OOD threshold is too strict for your prediction domain, or you're predicting
+with a different embedder than you trained with. Try
+<code>predict(outlier_threshold=None)</code> to confirm, then pick a manual float.</p>
+<p><strong>Results differ between two machines.</strong>
+Check that the library, Python minor, and numpy/sklearn/hdbscan/umap versions
+match. See <a href="#14-determinism-and-reproducibility">section 14</a>.</p>
+<p><strong>First run is slow / downloads a file.</strong>
+That's the one-time ONNX model download (~90 MB) to
+<code>~/.cache/semantic_clusterer/</code>. Subsequent runs use the cache. Supply your own
+<code>embedding_model</code> to skip it entirely.</p>
+<p><strong>A <code>UserWarning</code> about UMAP.</strong>
+<code>umap-learn</code> failed to import; small/medium pipelines fell back to PCA-only.
+Reinstall <code>umap-learn</code> to restore full behaviour.</p>
+<p><strong><code>ValueError: Dataset size ... exceeds the hard limit of 200_000</code>.</strong>
+Set <code>max_samples=None</code> to enable the subsample-then-assign path, or a custom
+integer cap.</p>
+<p><strong>Can I force a specific pipeline tier?</strong>
+No. Tier and reduction are internal and chosen from your data. This is by
+design; see <a href="../working/"><code>working.md</code></a>.</p>
+<hr />
+<h2 id="18-migration-notes">18. Migration notes<a class="headerlink" href="#18-migration-notes" title="Permanent link">&para;</a></h2>
+<h3 id="strategy-and-reduction-are-no-longer-public"><code>strategy</code> and <code>reduction</code> are no longer public<a class="headerlink" href="#strategy-and-reduction-are-no-longer-public" title="Permanent link">&para;</a></h3>
+<p>Earlier configs accepted <code>strategy="auto|small|medium|large"</code> and
+<code>reduction="auto|pca|None"</code>. These are now <strong>internal</strong>: tier routing and
+dimensionality reduction are decided automatically from dataset size and
+embedding dimension.</p>
+<ul>
+<li>Passing <code>strategy=</code> or <code>reduction=</code> to a config (object or dict) now raises
+  <code>ValueError</code> (unknown field).</li>
+<li>There is no replacement knob, and the behaviour you previously got from
+  <code>strategy="auto"</code> / <code>reduction="auto"</code> is exactly the default now.</li>
+<li>If you previously forced a tier for testing, size your input to land in the
+  desired tier instead (see the size ranges in <a href="#15-performance-and-scaling">section 15</a>).</li>
+</ul>
+<p>Everything else - <code>cluster_granularity</code>, <code>quality</code>, <code>min_cluster_size</code>,
+<code>min_samples</code>, <code>max_samples</code>, the <code>fit/predict/save/load</code> lifecycle - is
+unchanged.</p>
+<hr />
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../"><code>index.md</code></a>, quick overview and API surface.</li>
+<li><a href="../working/"><code>working.md</code></a>, internal architecture and algorithms.</li>
+<li><a href="../changelog/"><code>changelog.md</code></a>, version history.</li>
+<li><code>examples/</code> - eight runnable scripts covering every feature.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 semantic_clusterer contributor
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Baishnab1708/semantic_clusterer" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/semantic_clusterer/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "content.code.copy", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
