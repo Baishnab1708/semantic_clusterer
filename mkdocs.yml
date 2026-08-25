@@ -17,6 +17,7 @@ edit_uri: edit/main/
 # --- Theme configuration ---
 theme:
   name: material
+  custom_dir: overrides
   favicon: assets/favicon.svg
 
   # --- Sleek Minimalist Dark/Slate palette (No Light/Dark Switch) ---
